@@ -18,7 +18,7 @@ CREATE TABLE users (
     first_name VARCHAR(50) NOT NULL,
     email VARCHAR(300) NOT NULL,
     password_hash VARCHAR(255),
-    role VARCHAR(20) NOT NULL CHECK (role IN ('user', 'guest', 'admin')),
+    role VARCHAR(20) NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'guest', 'admin')),
     email_verified_at TIMESTAMPTZ DEFAULT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
