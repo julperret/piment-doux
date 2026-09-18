@@ -14,7 +14,8 @@ model User {
   addresses         Address[]
   orders            Order[]
   tokens            Token[]
-  appointments      Appointment[]   
+  appointments      Appointment[]
+  posts             Post[]
 
   @@map("users")
 }
@@ -159,4 +160,39 @@ enum AppointmentValue {
   pending
   confirmed
   cancelled
+}
+
+model Media {
+  id                  Int             @id @default(autoincrement())
+  filePath            VarChar(2048)   @map("file_path")
+  altText             VarChar(255)    @map("alt_text")
+  mimeType            VarChar(50)     @map("mime_type")
+  createdAt           Timestamptz     @default(now()) @map("created_at")
+  posts               Post[]
+  
+  @@map("media")
+}
+
+model Post {
+  id                  Int             @id @default(autoincrement())
+  userId              Int             @map("user_id")
+  user                User            @relation(fields: [userId], references: [id])
+  coverMediaId        Int?             @map("cover_media_id")
+  media               Media?           @relation(fields: [coverMediaId], references: [id])
+  title               VarChar(100)
+  slug                VarChar(100)    @unique
+  content             String
+  status              PostValue
+  publishedAt         Timestamptz?    @map("published_at")
+  createdAt           Timestamptz     @default(now()) @map("created_at")
+  updatedAt           Timestamptz?    @map("updated_at")
+
+  @@map("posts")
+}
+
+enum PostValue {
+  @@type("pg/text@1")
+  draft
+  published
+  archived
 }
