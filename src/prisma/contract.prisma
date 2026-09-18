@@ -17,7 +17,23 @@ model User {
 
 enum Role {
   @@type("pg/text@1")
-  user = "user"
-  guest = "guest"
-  admin = "admin"
+  user
+  guest
+  admin
 }
+
+model Product {
+  id                Int           @id @default(autoincrement())
+  slug              VarChar(100)
+  label             VarChar(100)
+  description       String
+  stockQuantity     Int           @map("stock_quantity")
+  price             Numeric(10, 2) 
+  createdAt         Timestamptz   @default(now()) @map("created_at")
+  updatedAt         Timestamptz?  @map("updated_at")
+  deletedAt         Timestamptz?  @map("deleted_at")
+
+  @@map("products")
+}
+
+
