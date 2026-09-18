@@ -32,8 +32,16 @@
       "model": "Order",
       "namespace": "public"
     },
+    "post_media": {
+      "model": "PostMedia",
+      "namespace": "public"
+    },
     "posts": {
       "model": "Post",
+      "namespace": "public"
+    },
+    "product_media": {
+      "model": "ProductMedia",
       "namespace": "public"
     },
     "products": {
@@ -564,6 +572,34 @@
                 },
                 "to": {
                   "model": "Post",
+                  "namespace": "public"
+                }
+              },
+              "products": {
+                "cardinality": "N:M",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "media_id"
+                  ]
+                },
+                "through": {
+                  "childColumns": [
+                    "product_id"
+                  ],
+                  "namespaceId": "public",
+                  "parentColumns": [
+                    "media_id"
+                  ],
+                  "table": "product_media",
+                  "targetColumns": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Product",
                   "namespace": "public"
                 }
               }
@@ -1122,6 +1158,21 @@
                   "namespace": "public"
                 }
               },
+              "postMedia": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "postId"
+                  ]
+                },
+                "to": {
+                  "model": "PostMedia",
+                  "namespace": "public"
+                }
+              },
               "user": {
                 "cardinality": "N:1",
                 "nullable": false,
@@ -1174,6 +1225,70 @@
               },
               "namespaceId": "public",
               "table": "posts"
+            }
+          },
+          "PostMedia": {
+            "fields": {
+              "mediaId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "postId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "media": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "mediaId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Media",
+                  "namespace": "public"
+                }
+              },
+              "post": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "postId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Post",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "mediaId": {
+                  "column": "media_id"
+                },
+                "postId": {
+                  "column": "post_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "post_media"
             }
           },
           "Product": {
@@ -1253,6 +1368,34 @@
               }
             },
             "relations": {
+              "media": {
+                "cardinality": "N:M",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "product_id"
+                  ]
+                },
+                "through": {
+                  "childColumns": [
+                    "media_id"
+                  ],
+                  "namespaceId": "public",
+                  "parentColumns": [
+                    "product_id"
+                  ],
+                  "table": "product_media",
+                  "targetColumns": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Media",
+                  "namespace": "public"
+                }
+              },
               "orderLines": {
                 "cardinality": "1:N",
                 "on": {
@@ -1301,6 +1444,70 @@
               },
               "namespaceId": "public",
               "table": "products"
+            }
+          },
+          "ProductMedia": {
+            "fields": {
+              "mediaId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "productId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "media": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "mediaId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Media",
+                  "namespace": "public"
+                }
+              },
+              "product": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "productId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Product",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "mediaId": {
+                  "column": "media_id"
+                },
+                "productId": {
+                  "column": "product_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "product_media"
             }
           },
           "Token": {
@@ -2319,6 +2526,79 @@
               },
               "uniques": []
             },
+            "post_media": {
+              "columns": {
+                "media_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "post_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "post_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "post_media"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "posts"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "media_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "post_media"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "media"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "media_id"
+                  ],
+                  "name": "post_media_media_id_idx_495ca900",
+                  "prefix": "post_media_media_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "post_id"
+                  ],
+                  "name": "post_media_post_id_idx_865a6df2",
+                  "prefix": "post_media_post_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "post_id",
+                  "media_id"
+                ]
+              },
+              "uniques": []
+            },
             "posts": {
               "checks": [
                 {
@@ -2463,6 +2743,79 @@
                   ]
                 }
               ]
+            },
+            "product_media": {
+              "columns": {
+                "media_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "product_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "product_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "product_media"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "products"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "media_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "product_media"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "media"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "media_id"
+                  ],
+                  "name": "product_media_media_id_idx_495ca900",
+                  "prefix": "product_media_media_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "product_id"
+                  ],
+                  "name": "product_media_product_id_idx_22a2b7d2",
+                  "prefix": "product_media_product_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "product_id",
+                  "media_id"
+                ]
+              },
+              "uniques": []
             },
             "products": {
               "columns": {
@@ -2773,7 +3126,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "1600173fad4eecf9f57c402112cde51629fb97531a0f52bdcc8d00b10c84b40b"
+    "storageHash": "a269302dd8b68c159430fd81a4c54173145a5775469d162ea4b3f9fc7536a9d3"
   },
   "capabilities": {
     "postgres": {

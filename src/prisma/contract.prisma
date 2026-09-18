@@ -38,6 +38,7 @@ model Product {
   updatedAt           Timestamptz?    @map("updated_at")
   deletedAt           Timestamptz?    @map("deleted_at")
   orderLines          OrderLine[]
+  media               Media[]
 
   @@map("products")
 }
@@ -168,7 +169,9 @@ model Media {
   altText             VarChar(255)    @map("alt_text")
   mimeType            VarChar(50)     @map("mime_type")
   createdAt           Timestamptz     @default(now()) @map("created_at")
+  coverPosts          Post[]          @relation("CoverMedia")
   posts               Post[]
+  products            Product[]
   
   @@map("media")
 }
@@ -177,8 +180,8 @@ model Post {
   id                  Int             @id @default(autoincrement())
   userId              Int             @map("user_id")
   user                User            @relation(fields: [userId], references: [id])
-  coverMediaId        Int?             @map("cover_media_id")
-  media               Media?           @relation(fields: [coverMediaId], references: [id])
+  coverMediaId        Int?            @map("cover_media_id")
+  coverMedia          Media?          @relation("CoverMedia", fields: [coverMediaId], references: [id])
   title               VarChar(100)
   slug                VarChar(100)    @unique
   content             String
@@ -186,6 +189,7 @@ model Post {
   publishedAt         Timestamptz?    @map("published_at")
   createdAt           Timestamptz     @default(now()) @map("created_at")
   updatedAt           Timestamptz?    @map("updated_at")
+  media          Media[]
 
   @@map("posts")
 }
@@ -195,4 +199,24 @@ enum PostValue {
   draft
   published
   archived
+}
+
+model PostMedia {
+  postId              Int             @map("post_id")
+  post                Post            @relation(fields: [postId], references: [id])
+  mediaId             Int             @map("media_id")
+  media               Media           @relation(fields: [mediaId], references: [id])
+
+  @@id([postId, mediaId])
+  @@map("post_media")
+}
+
+model ProductMedia {
+  productId           Int             @map("product_id")
+  product             Product         @relation(fields: [productId], references: [id])
+  mediaId             Int             @unique @map("media_id")
+  media               Media           @relation(fields: [mediaId], references: [id])
+
+  @@id([productId, mediaId])
+  @@map("product_media")
 }

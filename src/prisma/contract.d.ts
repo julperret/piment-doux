@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'1600173fad4eecf9f57c402112cde51629fb97531a0f52bdcc8d00b10c84b40b'>;
+  StorageHashBase<'a269302dd8b68c159430fd81a4c54173145a5775469d162ea4b3f9fc7536a9d3'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -322,6 +322,10 @@ export type FieldOutputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
     };
+    readonly PostMedia: {
+      readonly postId: CodecTypes['pg/int4@1']['output'];
+      readonly mediaId: CodecTypes['pg/int4@1']['output'];
+    };
     readonly Product: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly slug: Varchar<100>;
@@ -332,6 +336,10 @@ export type FieldOutputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
       readonly deletedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
+    };
+    readonly ProductMedia: {
+      readonly productId: CodecTypes['pg/int4@1']['output'];
+      readonly mediaId: CodecTypes['pg/int4@1']['output'];
     };
     readonly Token: {
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -439,6 +447,10 @@ export type FieldInputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
     };
+    readonly PostMedia: {
+      readonly postId: CodecTypes['pg/int4@1']['input'];
+      readonly mediaId: CodecTypes['pg/int4@1']['input'];
+    };
     readonly Product: {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly slug: CodecTypes['sql/varchar@1']['input'];
@@ -449,6 +461,10 @@ export type FieldInputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
       readonly deletedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+    };
+    readonly ProductMedia: {
+      readonly productId: CodecTypes['pg/int4@1']['input'];
+      readonly mediaId: CodecTypes['pg/int4@1']['input'];
     };
     readonly Token: {
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -544,6 +560,10 @@ export type StorageColumnTypes = {
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
       readonly user_id: CodecTypes['pg/int4@1']['output'];
     };
+    readonly post_media: {
+      readonly media_id: CodecTypes['pg/int4@1']['output'];
+      readonly post_id: CodecTypes['pg/int4@1']['output'];
+    };
     readonly posts: {
       readonly content: CodecTypes['pg/text@1']['output'];
       readonly cover_media_id: CodecTypes['pg/int4@1']['output'] | null;
@@ -555,6 +575,10 @@ export type StorageColumnTypes = {
       readonly title: Varchar<100>;
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
       readonly user_id: CodecTypes['pg/int4@1']['output'];
+    };
+    readonly product_media: {
+      readonly media_id: CodecTypes['pg/int4@1']['output'];
+      readonly product_id: CodecTypes['pg/int4@1']['output'];
     };
     readonly products: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -661,6 +685,10 @@ export type StorageColumnInputTypes = {
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
       readonly user_id: CodecTypes['pg/int4@1']['input'];
     };
+    readonly post_media: {
+      readonly media_id: CodecTypes['pg/int4@1']['input'];
+      readonly post_id: CodecTypes['pg/int4@1']['input'];
+    };
     readonly posts: {
       readonly content: CodecTypes['pg/text@1']['input'];
       readonly cover_media_id: CodecTypes['pg/int4@1']['input'] | null;
@@ -672,6 +700,10 @@ export type StorageColumnInputTypes = {
       readonly title: CodecTypes['sql/varchar@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
       readonly user_id: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly product_media: {
+      readonly media_id: CodecTypes['pg/int4@1']['input'];
+      readonly product_id: CodecTypes['pg/int4@1']['input'];
     };
     readonly products: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -1251,6 +1283,62 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly post_media: {
+              columns: {
+                readonly post_id: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly media_id: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['post_id', 'media_id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'post_media_post_id_idx_865a6df2';
+                  readonly prefix: 'post_media_post_id_idx';
+                  readonly columns: readonly ['post_id'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'post_media_media_id_idx_495ca900';
+                  readonly prefix: 'post_media_media_id_idx';
+                  readonly columns: readonly ['media_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'post_media';
+                    readonly columns: readonly ['post_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'posts';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'post_media';
+                    readonly columns: readonly ['media_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'media';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
             readonly posts: {
               columns: {
                 readonly id: {
@@ -1345,6 +1433,62 @@ type ContractBase = Omit<
                     readonly namespaceId: 'public' & NamespaceId;
                     readonly tableName: 'posts';
                     readonly columns: readonly ['cover_media_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'media';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly product_media: {
+              columns: {
+                readonly product_id: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly media_id: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['product_id', 'media_id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'product_media_product_id_idx_22a2b7d2';
+                  readonly prefix: 'product_media_product_id_idx';
+                  readonly columns: readonly ['product_id'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'product_media_media_id_idx_495ca900';
+                  readonly prefix: 'product_media_media_id_idx';
+                  readonly columns: readonly ['media_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'product_media';
+                    readonly columns: readonly ['product_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'products';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'product_media';
+                    readonly columns: readonly ['media_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
@@ -1614,6 +1758,14 @@ type ContractBase = Omit<
     };
     readonly media: { readonly namespace: 'public' & NamespaceId; readonly model: 'Media' };
     readonly posts: { readonly namespace: 'public' & NamespaceId; readonly model: 'Post' };
+    readonly post_media: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'PostMedia';
+    };
+    readonly product_media: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ProductMedia';
+    };
   };
   readonly domain: {
     readonly namespaces: {
@@ -1911,6 +2063,24 @@ type ContractBase = Omit<
                 readonly on: {
                   readonly localFields: readonly ['id'];
                   readonly targetFields: readonly ['coverMediaId'];
+                };
+              };
+              readonly products: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Product';
+                };
+                readonly cardinality: 'N:M';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['media_id'];
+                };
+                readonly through: {
+                  readonly table: 'product_media';
+                  readonly namespaceId: 'public';
+                  readonly parentColumns: readonly ['media_id'];
+                  readonly childColumns: readonly ['product_id'];
+                  readonly targetColumns: readonly ['id'];
                 };
               };
             };
@@ -2282,6 +2452,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['id'];
                 };
               };
+              readonly postMedia: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'PostMedia';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['postId'];
+                };
+              };
               readonly user: {
                 readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
                 readonly cardinality: 'N:1';
@@ -2305,6 +2486,47 @@ type ContractBase = Omit<
                 readonly publishedAt: { readonly column: 'published_at' };
                 readonly createdAt: { readonly column: 'created_at' };
                 readonly updatedAt: { readonly column: 'updated_at' };
+              };
+            };
+          };
+          readonly PostMedia: {
+            readonly fields: {
+              readonly postId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly mediaId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+            };
+            readonly relations: {
+              readonly media: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Media';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['mediaId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly post: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Post' };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['postId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'post_media';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly postId: { readonly column: 'post_id' };
+                readonly mediaId: { readonly column: 'media_id' };
               };
             };
           };
@@ -2369,6 +2591,24 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly media: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Media';
+                };
+                readonly cardinality: 'N:M';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['product_id'];
+                };
+                readonly through: {
+                  readonly table: 'product_media';
+                  readonly namespaceId: 'public';
+                  readonly parentColumns: readonly ['product_id'];
+                  readonly childColumns: readonly ['media_id'];
+                  readonly targetColumns: readonly ['id'];
+                };
+              };
               readonly orderLines: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -2394,6 +2634,50 @@ type ContractBase = Omit<
                 readonly createdAt: { readonly column: 'created_at' };
                 readonly updatedAt: { readonly column: 'updated_at' };
                 readonly deletedAt: { readonly column: 'deleted_at' };
+              };
+            };
+          };
+          readonly ProductMedia: {
+            readonly fields: {
+              readonly productId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly mediaId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+            };
+            readonly relations: {
+              readonly media: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Media';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['mediaId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly product: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Product';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['productId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'product_media';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly productId: { readonly column: 'product_id' };
+                readonly mediaId: { readonly column: 'media_id' };
               };
             };
           };
