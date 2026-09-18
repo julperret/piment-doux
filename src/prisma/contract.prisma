@@ -1,16 +1,16 @@
 // use prisma-8
 
 model User {
-  id                Int             @id @default(autoincrement())
-  lastName          VarChar(50)     @map("last_name")
-  firstName         VarChar(50)     @map("first_name")
+  id                Int               @id @default(autoincrement())
+  lastName          VarChar(50)       @map("last_name")
+  firstName         VarChar(50)       @map("first_name")
   email             VarChar(300)   
-  passwordHash      VarChar(255)?   @map("password_hash")
-  role              Role            @default(user)
-  emailVerifiedAt   Timestamptz?    @map("email_verified_at")
-  createdAt         Timestamptz     @default(now()) @map("created_at")
-  updatedAt         Timestamptz?    @map("updated_at")
-  deletedAt         Timestamptz?    @map("deleted_at")
+  passwordHash      VarChar(255)?     @map("password_hash")
+  role              Role              @default(user)
+  emailVerifiedAt   Timestamptz?      @map("email_verified_at")
+  createdAt         Timestamptz       @default(now()) @map("created_at")
+  updatedAt         Timestamptz?      @map("updated_at")
+  deletedAt         Timestamptz?      @map("deleted_at")
   addresses         Address[]
   orders            Order[]    
 
@@ -25,55 +25,68 @@ enum Role {
 }
 
 model Product {
-  id                  Int           @id @default(autoincrement())
+  id                  Int             @id @default(autoincrement())
   slug                VarChar(100)
   label               VarChar(100)
   description         String
-  stockQuantity       Int           @map("stock_quantity")
+  stockQuantity       Int             @map("stock_quantity")
   price               Numeric(10, 2) 
-  createdAt           Timestamptz   @default(now()) @map("created_at")
-  updatedAt           Timestamptz?  @map("updated_at")
-  deletedAt           Timestamptz?  @map("deleted_at")
+  createdAt           Timestamptz     @default(now()) @map("created_at")
+  updatedAt           Timestamptz?    @map("updated_at")
+  deletedAt           Timestamptz?    @map("deleted_at")
+  orderLines          OrderLine[]
 
   @@map("products")
 }
 
 model Address {
-  id                  Int           @id @default(autoincrement())
-  userId              Int           @map("user_id")
-  user                User          @relation(fields: [userId], references: [id])
+  id                  Int             @id @default(autoincrement())
+  userId              Int             @map("user_id")
+  user                User            @relation(fields: [userId], references: [id])
   label               VarChar(50)   
   street              VarChar(100)
   city                VarChar(50)
-  postalCode          VarChar(20)   @map("postal_code")
+  postalCode          VarChar(20)     @map("postal_code")
   country             VarChar(50)
   phone               VarChar(20)
-  createdAt           Timestamptz   @default(now()) @map("created_at")
-  updatedAt           Timestamptz?  @map("updated_at")
+  createdAt           Timestamptz     @default(now()) @map("created_at")
+  updatedAt           Timestamptz?    @map("updated_at")
 
   @@map("addresses")
 }
 
 model Order {
-  id                  Int           @id @default(autoincrement())
-  userId              Int           @map("user_id")
-  user                User          @relation(fields: [userId], references: [id])
+  id                  Int             @id @default(autoincrement())
+  userId              Int             @map("user_id")
+  user                User            @relation(fields: [userId], references: [id])
   status              StatusValue
-  deliveryStreet      VarChar(100)  @map("delivery_street")
-  deliveryCity        VarChar(50)   @map("delivery_city")
-  deliveryPostalCode  VarChar(20)   @map("delivery_postal_code")
-  deliveryCountry     VarChar(50)   @map("delivery_country")
-  deliveryPhone       VarChar(20)   @map("delivery_phone")
-  billingStreet       VarChar(100)  @map("billing_street")
-  billingCity         VarChar(50)   @map("billing_city")
-  billingPostalCode   VarChar(20)   @map("billing_postal_code")
-  billingCountry      VarChar(50)   @map("billing_country")
-  billingPhone        VarChar(20)   @map("billing_phone")
-  paidAt              Timestamptz?  @map("paid_at")
-  createdAt           Timestamptz   @default(now()) @map("created_at")
-  updatedAt           Timestamptz?  @map("updated_at")
+  deliveryStreet      VarChar(100)    @map("delivery_street")
+  deliveryCity        VarChar(50)     @map("delivery_city")
+  deliveryPostalCode  VarChar(20)     @map("delivery_postal_code")
+  deliveryCountry     VarChar(50)     @map("delivery_country")
+  deliveryPhone       VarChar(20)     @map("delivery_phone")
+  billingStreet       VarChar(100)    @map("billing_street")
+  billingCity         VarChar(50)     @map("billing_city")
+  billingPostalCode   VarChar(20)     @map("billing_postal_code")
+  billingCountry      VarChar(50)     @map("billing_country")
+  billingPhone        VarChar(20)     @map("billing_phone")
+  paidAt              Timestamptz?    @map("paid_at")
+  createdAt           Timestamptz     @default(now()) @map("created_at")
+  updatedAt           Timestamptz?    @map("updated_at")
+  orderStatuses       OrderStatus[]
+  orderLines          OrderLine[]   
 
   @@map("orders")
+}
+
+model OrderStatus {
+  id                  Int             @id @default(autoincrement())
+  orderId             Int             @map("order_id")
+  order               Order           @relation(fields: [orderId], references: [id])
+  status              StatusValue
+  changedAt           Timestamptz     @default(now()) @map("changed_at")
+
+  @@map("order_statuses")
 }
 
 enum StatusValue {
@@ -83,4 +96,17 @@ enum StatusValue {
   shipped
   delivered
   cancelled
+}
+
+model OrderLine {
+  orderId             Int             @map("order_id")
+  order               Order           @relation(fields: [orderId], references: [id])
+  productId           Int             @map("product_id")
+  product             Product         @relation(fields: [productId], references: [id])
+  quantity            Int
+  discountPercent     Numeric(5, 2)   @map("discount_percent")
+  unitPrice           Numeric(10, 2)  @map("unit_price")
+
+  @@id([orderId, productId])
+  @@map("order_lines")
 }
