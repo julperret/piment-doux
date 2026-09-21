@@ -49,7 +49,7 @@ CREATE TABLE addresses (
 CREATE TABLE orders (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id),
-    status VARCHAR(20) NOT NULL CHECK (status IN ('pending', 'processing', 'shipped', 'delivered', 'cancelled')),
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'shipped', 'delivered', 'cancelled')),
     delivery_street VARCHAR(100) NOT NULL,
     delivery_city VARCHAR(50) NOT NULL,
     delivery_postal_code VARCHAR(20) NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE posts (
     title VARCHAR(100) NOT NULL,
     slug VARCHAR(100) UNIQUE NOT NULL,
     content TEXT NOT NULL,
-    status VARCHAR(20) NOT NULL CHECK (status IN ('draft', 'published', 'archived')),
+    status VARCHAR(20) NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'archived')),
     published_at TIMESTAMPTZ DEFAULT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
