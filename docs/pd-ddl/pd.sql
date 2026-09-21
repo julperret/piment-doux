@@ -135,7 +135,7 @@ CREATE TABLE post_media (
 
 CREATE TABLE product_media (
     product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
-    media_id INTEGER NOT NULL REFERENCES media(id) ON DELETE CASCADE UNIQUE,
+    media_id INTEGER NOT NULL REFERENCES media(id) ON DELETE CASCADE,
     PRIMARY KEY (product_id, media_id)
 );
 
