@@ -93,30 +93,16 @@ CREATE TABLE tokens (
     used_at TIMESTAMPTZ DEFAULT NULL
 );
 
-CREATE TABLE availabilities (
-    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    start_time TIMESTAMPTZ NOT NULL,
-    end_time TIMESTAMPTZ NOT NULL,
-    is_open BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT NULL,
-    CONSTRAINT availabilities_time_check CHECK (start_time < end_time)
-);
-
-CREATE TABLE appointments (
+CREATE TABLE inquiries (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id),
-    availability_id INTEGER NOT NULL REFERENCES availabilities(id),
-    status VARCHAR(20) NOT NULL CHECK (status IN ('pending', 'confirmed', 'cancelled')),
-    message TEXT,
-    event_date DATE NOT NULL,
-    guest_count INTEGER NOT NULL CHECK (guest_count > 0),
+    status VARCHAR(20) NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'handled')),
+    message TEXT NOT NULL,
+    event_date DATE,
+    guest_count INTEGER CHECK (guest_count > 0),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL
 );
-
-CREATE UNIQUE INDEX appointments_availability_active_idx
-  ON appointments(availability_id) WHERE status <> 'cancelled';
 
 CREATE TABLE media (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -163,7 +149,9 @@ CREATE INDEX order_statuses_order_changed_idx ON order_statuses(order_id, change
 CREATE INDEX orders_status_idx ON orders(status);
 -- Load a user's saved addresses at checkout
 CREATE INDEX addresses_user_idx ON addresses(user_id);
--- Upcoming appointments in admin calendar view
-CREATE INDEX appointments_event_date_idx ON appointments(event_date);
 -- Cleanup job: find expired unused tokens
 CREATE INDEX tokens_expires_unused_idx ON tokens(expires_at) WHERE used_at IS NULL;
+-- inquiries for a given user, ordered by creation date
+CREATE INDEX inquiries_user_created_idx ON inquiries(user_id, created_at DESC);
+-- inquiries not yet handled, ordered by creation date
+CREATE INDEX inquiries_new_created_idx ON inquiries(created_at DESC) WHERE status = 'new';
