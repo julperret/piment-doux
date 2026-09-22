@@ -2719,34 +2719,34 @@ type ContractBase = Omit<
           readonly Role: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
-              { readonly name: 'user'; readonly value: 'user' },
-              { readonly name: 'guest'; readonly value: 'guest' },
-              { readonly name: 'admin'; readonly value: 'admin' },
+              { readonly name: 'User'; readonly value: 'user' },
+              { readonly name: 'Guest'; readonly value: 'guest' },
+              { readonly name: 'Admin'; readonly value: 'admin' },
             ];
           };
           readonly StatusValue: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
-              { readonly name: 'pending'; readonly value: 'pending' },
-              { readonly name: 'processing'; readonly value: 'processing' },
-              { readonly name: 'shipped'; readonly value: 'shipped' },
-              { readonly name: 'delivered'; readonly value: 'delivered' },
-              { readonly name: 'cancelled'; readonly value: 'cancelled' },
+              { readonly name: 'Pending'; readonly value: 'pending' },
+              { readonly name: 'Processing'; readonly value: 'processing' },
+              { readonly name: 'Shipped'; readonly value: 'shipped' },
+              { readonly name: 'Delivered'; readonly value: 'delivered' },
+              { readonly name: 'Cancelled'; readonly value: 'cancelled' },
             ];
           };
           readonly InquiryValue: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
-              { readonly name: 'new'; readonly value: 'new' },
-              { readonly name: 'handled'; readonly value: 'handled' },
+              { readonly name: 'New'; readonly value: 'new' },
+              { readonly name: 'Handled'; readonly value: 'handled' },
             ];
           };
           readonly PostValue: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
-              { readonly name: 'draft'; readonly value: 'draft' },
-              { readonly name: 'published'; readonly value: 'published' },
-              { readonly name: 'archived'; readonly value: 'archived' },
+              { readonly name: 'Draft'; readonly value: 'draft' },
+              { readonly name: 'Published'; readonly value: 'published' },
+              { readonly name: 'Archived'; readonly value: 'archived' },
             ];
           };
         };

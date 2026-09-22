@@ -61,11 +61,11 @@
             "codecId": "pg/text@1",
             "members": [
               {
-                "name": "new",
+                "name": "New",
                 "value": "new"
               },
               {
-                "name": "handled",
+                "name": "Handled",
                 "value": "handled"
               }
             ]
@@ -74,15 +74,15 @@
             "codecId": "pg/text@1",
             "members": [
               {
-                "name": "draft",
+                "name": "Draft",
                 "value": "draft"
               },
               {
-                "name": "published",
+                "name": "Published",
                 "value": "published"
               },
               {
-                "name": "archived",
+                "name": "Archived",
                 "value": "archived"
               }
             ]
@@ -91,15 +91,15 @@
             "codecId": "pg/text@1",
             "members": [
               {
-                "name": "user",
+                "name": "User",
                 "value": "user"
               },
               {
-                "name": "guest",
+                "name": "Guest",
                 "value": "guest"
               },
               {
-                "name": "admin",
+                "name": "Admin",
                 "value": "admin"
               }
             ]
@@ -108,23 +108,23 @@
             "codecId": "pg/text@1",
             "members": [
               {
-                "name": "pending",
+                "name": "Pending",
                 "value": "pending"
               },
               {
-                "name": "processing",
+                "name": "Processing",
                 "value": "processing"
               },
               {
-                "name": "shipped",
+                "name": "Shipped",
                 "value": "shipped"
               },
               {
-                "name": "delivered",
+                "name": "Delivered",
                 "value": "delivered"
               },
               {
-                "name": "cancelled",
+                "name": "Cancelled",
                 "value": "cancelled"
               }
             ]
