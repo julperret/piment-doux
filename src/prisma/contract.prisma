@@ -14,7 +14,6 @@ model User {
   addresses         Address[]
   orders            Order[]
   tokens            Token[]
-  appointments      Appointment[]
   posts             Post[]
 
   @@map("users")
@@ -126,41 +125,6 @@ model Token {
   usedAt              Timestamptz?    @map("used_at")
 
   @@map("tokens")
-}
-
-model Availability {
-  id                  Int             @id @default(autoincrement())
-  startTime           Timestamptz     @map("start_time")
-  endTime             Timestamptz     @map("end_time")
-  isOpen              Boolean         @default(true) @map("is_open")
-  createdAt           Timestamptz     @default(now()) @map("created_at")
-  updatedAt           Timestamptz?    @map("updated_at")
-  appointments        Appointment[]
-
-  @@map("availabilities")
-}
-
-model Appointment {
-  id                  Int             @id @default(autoincrement())
-  userId              Int             @map("user_id")
-  user                User            @relation(fields: [userId], references: [id])
-  availabilityId      Int             @map("availability_id")
-  availability        Availability    @relation(fields: [availabilityId], references: [id])
-  status              AppointmentValue
-  message             String? 
-  eventDate           Date            @map("event_date")
-  guestCount          Int             @map("guest_count")
-  createdAt           Timestamptz     @default(now()) @map("created_at")
-  updatedAt           Timestamptz?    @map("updated_at")
-
-  @@map("appointments")
-}
-
-enum AppointmentValue {
-  @@type("pg/text@1")
-  pending
-  confirmed
-  cancelled
 }
 
 model Media {
