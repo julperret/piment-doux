@@ -133,7 +133,7 @@ model Media {
   altText             VarChar(255)    @map("alt_text")
   mimeType            VarChar(50)     @map("mime_type")
   createdAt           Timestamptz     @default(now()) @map("created_at")
-  coverPosts          Post[]          @relation("CoverMedia")
+  coverPosts          Post[]          @relation("CoverMedia")
   posts               Post[]
   products            Product[]
   
@@ -153,7 +153,7 @@ model Post {
   publishedAt         Timestamptz?    @map("published_at")
   createdAt           Timestamptz     @default(now()) @map("created_at")
   updatedAt           Timestamptz?    @map("updated_at")
-  media          Media[]
+  media               Media[]
 
   @@map("posts")
 }
