@@ -96,6 +96,7 @@ CREATE TABLE order_statuses (
 CREATE TABLE order_lines (
     order_id INTEGER NOT NULL REFERENCES orders(id),
     product_id INTEGER NOT NULL REFERENCES products(id),
+    product_label VARCHAR(100) NOT NULL,
     quantity INTEGER NOT NULL CHECK (quantity > 0),
     discount_percent DECIMAL(5, 2) NOT NULL DEFAULT 0 CHECK (discount_percent >= 0 AND discount_percent <= 100),
     unit_price DECIMAL(10, 2) NOT NULL CHECK (unit_price >= 0),
