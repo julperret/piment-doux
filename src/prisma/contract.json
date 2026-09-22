@@ -1030,6 +1030,16 @@
                   "kind": "scalar"
                 }
               },
+              "productLabel": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 100
+                  }
+                }
+              },
               "quantity": {
                 "nullable": false,
                 "type": {
@@ -1093,6 +1103,9 @@
                 },
                 "productId": {
                   "column": "product_id"
+                },
+                "productLabel": {
+                  "column": "product_label"
                 },
                 "quantity": {
                   "column": "quantity"
@@ -2391,6 +2404,14 @@
                   "nativeType": "int4",
                   "nullable": false
                 },
+                "product_label": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 100
+                  }
+                },
                 "quantity": {
                   "codecId": "pg/int4@1",
                   "nativeType": "int4",
@@ -3343,7 +3364,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "cf6a31fe12ecb996119381ad652f624ae480927a92639f0a11a94b02232b554d"
+    "storageHash": "c7bc2b8d73a95ab41dffec4d1fdaece3a7ea6bdd652536c15aca949b2e2d5e89"
   },
   "capabilities": {
     "postgres": {

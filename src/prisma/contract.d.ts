@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'cf6a31fe12ecb996119381ad652f624ae480927a92639f0a11a94b02232b554d'>;
+  StorageHashBase<'c7bc2b8d73a95ab41dffec4d1fdaece3a7ea6bdd652536c15aca949b2e2d5e89'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -308,6 +308,7 @@ export type FieldOutputTypes = {
     readonly OrderLine: {
       readonly orderId: CodecTypes['pg/int4@1']['output'];
       readonly productId: CodecTypes['pg/int4@1']['output'];
+      readonly productLabel: Varchar<100>;
       readonly quantity: CodecTypes['pg/int4@1']['output'];
       readonly discountPercent: Numeric<5, 2>;
       readonly unitPrice: Numeric<10, 2>;
@@ -441,6 +442,7 @@ export type FieldInputTypes = {
     readonly OrderLine: {
       readonly orderId: CodecTypes['pg/int4@1']['input'];
       readonly productId: CodecTypes['pg/int4@1']['input'];
+      readonly productLabel: CodecTypes['sql/varchar@1']['input'];
       readonly quantity: CodecTypes['pg/int4@1']['input'];
       readonly discountPercent: CodecTypes['pg/numeric@1']['input'];
       readonly unitPrice: CodecTypes['pg/numeric@1']['input'];
@@ -554,6 +556,7 @@ export type StorageColumnTypes = {
       readonly discount_percent: Numeric<5, 2>;
       readonly order_id: CodecTypes['pg/int4@1']['output'];
       readonly product_id: CodecTypes['pg/int4@1']['output'];
+      readonly product_label: Varchar<100>;
       readonly quantity: CodecTypes['pg/int4@1']['output'];
       readonly unit_price: Numeric<10, 2>;
     };
@@ -687,6 +690,7 @@ export type StorageColumnInputTypes = {
       readonly discount_percent: CodecTypes['pg/numeric@1']['input'];
       readonly order_id: CodecTypes['pg/int4@1']['input'];
       readonly product_id: CodecTypes['pg/int4@1']['input'];
+      readonly product_label: CodecTypes['sql/varchar@1']['input'];
       readonly quantity: CodecTypes['pg/int4@1']['input'];
       readonly unit_price: CodecTypes['pg/numeric@1']['input'];
     };
@@ -1103,6 +1107,12 @@ type ContractBase = Omit<
                   readonly nativeType: 'int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
+                };
+                readonly product_label: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 100 };
                 };
                 readonly quantity: {
                   readonly nativeType: 'int4';
@@ -2430,6 +2440,14 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
+              readonly productLabel: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 100 };
+                };
+              };
               readonly quantity: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
@@ -2481,6 +2499,7 @@ type ContractBase = Omit<
               readonly fields: {
                 readonly orderId: { readonly column: 'order_id' };
                 readonly productId: { readonly column: 'product_id' };
+                readonly productLabel: { readonly column: 'product_label' };
                 readonly quantity: { readonly column: 'quantity' };
                 readonly discountPercent: { readonly column: 'discount_percent' };
                 readonly unitPrice: { readonly column: 'unit_price' };

@@ -130,6 +130,7 @@ model OrderLine {
   order               Order           @relation(fields: [orderId], references: [id])
   productId           Int             @map("product_id")
   product             Product         @relation(fields: [productId], references: [id])
+  productLabel        VarChar(100)    @map("product_label")
   quantity            Int
   discountPercent     Numeric(5, 2)   @default(0) @map("discount_percent")
   unitPrice           Numeric(10, 2)  @map("unit_price")
