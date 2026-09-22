@@ -8,14 +8,6 @@
       "model": "Address",
       "namespace": "public"
     },
-    "appointments": {
-      "model": "Appointment",
-      "namespace": "public"
-    },
-    "availabilities": {
-      "model": "Availability",
-      "namespace": "public"
-    },
     "media": {
       "model": "Media",
       "namespace": "public"
@@ -61,23 +53,6 @@
     "namespaces": {
       "public": {
         "enum": {
-          "AppointmentValue": {
-            "codecId": "pg/text@1",
-            "members": [
-              {
-                "name": "pending",
-                "value": "pending"
-              },
-              {
-                "name": "confirmed",
-                "value": "confirmed"
-              },
-              {
-                "name": "cancelled",
-                "value": "cancelled"
-              }
-            ]
-          },
           "PostValue": {
             "codecId": "pg/text@1",
             "members": [
@@ -285,233 +260,6 @@
               "table": "addresses"
             }
           },
-          "Appointment": {
-            "fields": {
-              "availabilityId": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
-                  "kind": "scalar"
-                }
-              },
-              "createdAt": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "kind": "scalar"
-                }
-              },
-              "eventDate": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/date-temporal@1",
-                  "kind": "scalar"
-                }
-              },
-              "guestCount": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
-                  "kind": "scalar"
-                }
-              },
-              "id": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
-                  "kind": "scalar"
-                }
-              },
-              "message": {
-                "nullable": true,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
-              "status": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                },
-                "valueSet": {
-                  "entityKind": "enum",
-                  "entityName": "AppointmentValue",
-                  "namespaceId": "public",
-                  "plane": "domain"
-                }
-              },
-              "updatedAt": {
-                "nullable": true,
-                "type": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "kind": "scalar"
-                }
-              },
-              "userId": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
-                  "kind": "scalar"
-                }
-              }
-            },
-            "relations": {
-              "availability": {
-                "cardinality": "N:1",
-                "nullable": false,
-                "on": {
-                  "localFields": [
-                    "availabilityId"
-                  ],
-                  "targetFields": [
-                    "id"
-                  ]
-                },
-                "to": {
-                  "model": "Availability",
-                  "namespace": "public"
-                }
-              },
-              "user": {
-                "cardinality": "N:1",
-                "nullable": false,
-                "on": {
-                  "localFields": [
-                    "userId"
-                  ],
-                  "targetFields": [
-                    "id"
-                  ]
-                },
-                "to": {
-                  "model": "User",
-                  "namespace": "public"
-                }
-              }
-            },
-            "storage": {
-              "fields": {
-                "availabilityId": {
-                  "column": "availability_id"
-                },
-                "createdAt": {
-                  "column": "created_at"
-                },
-                "eventDate": {
-                  "column": "event_date"
-                },
-                "guestCount": {
-                  "column": "guest_count"
-                },
-                "id": {
-                  "column": "id"
-                },
-                "message": {
-                  "column": "message"
-                },
-                "status": {
-                  "column": "status"
-                },
-                "updatedAt": {
-                  "column": "updated_at"
-                },
-                "userId": {
-                  "column": "user_id"
-                }
-              },
-              "namespaceId": "public",
-              "table": "appointments"
-            }
-          },
-          "Availability": {
-            "fields": {
-              "createdAt": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "kind": "scalar"
-                }
-              },
-              "endTime": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "kind": "scalar"
-                }
-              },
-              "id": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
-                  "kind": "scalar"
-                }
-              },
-              "isOpen": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/bool@1",
-                  "kind": "scalar"
-                }
-              },
-              "startTime": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "kind": "scalar"
-                }
-              },
-              "updatedAt": {
-                "nullable": true,
-                "type": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "kind": "scalar"
-                }
-              }
-            },
-            "relations": {
-              "appointments": {
-                "cardinality": "1:N",
-                "on": {
-                  "localFields": [
-                    "id"
-                  ],
-                  "targetFields": [
-                    "availabilityId"
-                  ]
-                },
-                "to": {
-                  "model": "Appointment",
-                  "namespace": "public"
-                }
-              }
-            },
-            "storage": {
-              "fields": {
-                "createdAt": {
-                  "column": "created_at"
-                },
-                "endTime": {
-                  "column": "end_time"
-                },
-                "id": {
-                  "column": "id"
-                },
-                "isOpen": {
-                  "column": "is_open"
-                },
-                "startTime": {
-                  "column": "start_time"
-                },
-                "updatedAt": {
-                  "column": "updated_at"
-                }
-              },
-              "namespaceId": "public",
-              "table": "availabilities"
-            }
-          },
           "Media": {
             "fields": {
               "altText": {
@@ -560,6 +308,21 @@
               }
             },
             "relations": {
+              "coverPosts": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "coverMediaId"
+                  ]
+                },
+                "to": {
+                  "model": "Post",
+                  "namespace": "public"
+                }
+              },
               "posts": {
                 "cardinality": "1:N",
                 "on": {
@@ -1142,7 +905,7 @@
               }
             },
             "relations": {
-              "media": {
+              "coverMedia": {
                 "cardinality": "N:1",
                 "nullable": true,
                 "on": {
@@ -1158,18 +921,31 @@
                   "namespace": "public"
                 }
               },
-              "postMedia": {
-                "cardinality": "1:N",
+              "media": {
+                "cardinality": "N:M",
                 "on": {
                   "localFields": [
                     "id"
                   ],
                   "targetFields": [
-                    "postId"
+                    "post_id"
+                  ]
+                },
+                "through": {
+                  "childColumns": [
+                    "media_id"
+                  ],
+                  "namespaceId": "public",
+                  "parentColumns": [
+                    "post_id"
+                  ],
+                  "table": "post_media",
+                  "targetColumns": [
+                    "id"
                   ]
                 },
                 "to": {
-                  "model": "PostMedia",
+                  "model": "Media",
                   "namespace": "public"
                 }
               },
@@ -1721,21 +1497,6 @@
                   "namespace": "public"
                 }
               },
-              "appointments": {
-                "cardinality": "1:N",
-                "on": {
-                  "localFields": [
-                    "id"
-                  ],
-                  "targetFields": [
-                    "userId"
-                  ]
-                },
-                "to": {
-                  "model": "Appointment",
-                  "namespace": "public"
-                }
-              },
               "orders": {
                 "cardinality": "1:N",
                 "on": {
@@ -1935,188 +1696,6 @@
                   "unique": false
                 }
               ],
-              "primaryKey": {
-                "columns": [
-                  "id"
-                ]
-              },
-              "uniques": []
-            },
-            "appointments": {
-              "checks": [
-                {
-                  "expression": "\"status\" IN ('pending', 'confirmed', 'cancelled')",
-                  "name": "appointments_status_check_2ea04269",
-                  "prefix": "appointments_status_check"
-                }
-              ],
-              "columns": {
-                "availability_id": {
-                  "codecId": "pg/int4@1",
-                  "nativeType": "int4",
-                  "nullable": false
-                },
-                "created_at": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
-                  "nativeType": "timestamptz",
-                  "nullable": false
-                },
-                "event_date": {
-                  "codecId": "pg/date-temporal@1",
-                  "nativeType": "date",
-                  "nullable": false
-                },
-                "guest_count": {
-                  "codecId": "pg/int4@1",
-                  "nativeType": "int4",
-                  "nullable": false
-                },
-                "id": {
-                  "codecId": "pg/int4@1",
-                  "default": {
-                    "expression": "autoincrement()",
-                    "kind": "function"
-                  },
-                  "nativeType": "int4",
-                  "nullable": false
-                },
-                "message": {
-                  "codecId": "pg/text@1",
-                  "nativeType": "text",
-                  "nullable": true
-                },
-                "status": {
-                  "codecId": "pg/text@1",
-                  "nativeType": "text",
-                  "nullable": false,
-                  "valueSet": {
-                    "entityKind": "valueSet",
-                    "entityName": "AppointmentValue",
-                    "namespaceId": "public",
-                    "plane": "storage"
-                  }
-                },
-                "updated_at": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "nativeType": "timestamptz",
-                  "nullable": true
-                },
-                "user_id": {
-                  "codecId": "pg/int4@1",
-                  "nativeType": "int4",
-                  "nullable": false
-                }
-              },
-              "foreignKeys": [
-                {
-                  "source": {
-                    "columns": [
-                      "user_id"
-                    ],
-                    "namespaceId": "public",
-                    "tableName": "appointments"
-                  },
-                  "target": {
-                    "columns": [
-                      "id"
-                    ],
-                    "namespaceId": "public",
-                    "tableName": "users"
-                  }
-                },
-                {
-                  "source": {
-                    "columns": [
-                      "availability_id"
-                    ],
-                    "namespaceId": "public",
-                    "tableName": "appointments"
-                  },
-                  "target": {
-                    "columns": [
-                      "id"
-                    ],
-                    "namespaceId": "public",
-                    "tableName": "availabilities"
-                  }
-                }
-              ],
-              "indexes": [
-                {
-                  "columns": [
-                    "availability_id"
-                  ],
-                  "name": "appointments_availability_id_idx_7d018f69",
-                  "prefix": "appointments_availability_id_idx",
-                  "unique": false
-                },
-                {
-                  "columns": [
-                    "user_id"
-                  ],
-                  "name": "appointments_user_id_idx_6c952402",
-                  "prefix": "appointments_user_id_idx",
-                  "unique": false
-                }
-              ],
-              "primaryKey": {
-                "columns": [
-                  "id"
-                ]
-              },
-              "uniques": []
-            },
-            "availabilities": {
-              "columns": {
-                "created_at": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
-                  "nativeType": "timestamptz",
-                  "nullable": false
-                },
-                "end_time": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "nativeType": "timestamptz",
-                  "nullable": false
-                },
-                "id": {
-                  "codecId": "pg/int4@1",
-                  "default": {
-                    "expression": "autoincrement()",
-                    "kind": "function"
-                  },
-                  "nativeType": "int4",
-                  "nullable": false
-                },
-                "is_open": {
-                  "codecId": "pg/bool@1",
-                  "default": {
-                    "kind": "literal",
-                    "value": true
-                  },
-                  "nativeType": "bool",
-                  "nullable": false
-                },
-                "start_time": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "nativeType": "timestamptz",
-                  "nullable": false
-                },
-                "updated_at": {
-                  "codecId": "pg/timestamptz-temporal@1",
-                  "nativeType": "timestamptz",
-                  "nullable": true
-                }
-              },
-              "foreignKeys": [],
-              "indexes": [],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -2794,14 +2373,6 @@
               "indexes": [
                 {
                   "columns": [
-                    "media_id"
-                  ],
-                  "name": "product_media_media_id_idx_495ca900",
-                  "prefix": "product_media_media_id_idx",
-                  "unique": false
-                },
-                {
-                  "columns": [
                     "product_id"
                   ],
                   "name": "product_media_product_id_idx_22a2b7d2",
@@ -2815,7 +2386,13 @@
                   "media_id"
                 ]
               },
-              "uniques": []
+              "uniques": [
+                {
+                  "columns": [
+                    "media_id"
+                  ]
+                }
+              ]
             },
             "products": {
               "columns": {
@@ -3086,14 +2663,6 @@
             }
           },
           "valueSet": {
-            "AppointmentValue": {
-              "kind": "valueSet",
-              "values": [
-                "pending",
-                "confirmed",
-                "cancelled"
-              ]
-            },
             "PostValue": {
               "kind": "valueSet",
               "values": [
@@ -3126,7 +2695,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "a269302dd8b68c159430fd81a4c54173145a5775469d162ea4b3f9fc7536a9d3"
+    "storageHash": "5587745778ddbd831178bf20f005533e638c217027b7cac45f9f1abe4e105b15"
   },
   "capabilities": {
     "postgres": {
