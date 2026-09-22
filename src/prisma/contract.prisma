@@ -141,7 +141,7 @@ model OrderLine {
 model Token {
   id                  Int             @id @default(autoincrement())
   userId              Int             @map("user_id")
-  user                User            @relation(fields: [userId], references: [id])
+  user                User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   valueHash           VarChar(255)    @unique @map("value_hash")
   type                VarChar(50)
   createdAt           Timestamptz     @default(now()) @map("created_at")
@@ -189,7 +189,7 @@ model Post {
   userId              Int             @map("user_id")
   user                User            @relation(fields: [userId], references: [id])
   coverMediaId        Int?            @map("cover_media_id")
-  coverMedia          Media?          @relation("CoverMedia", fields: [coverMediaId], references: [id])
+  coverMedia          Media?          @relation("CoverMedia", fields: [coverMediaId], references: [id], onDelete: SetNull)
   title               VarChar(100)
   slug                VarChar(100)    @unique
   content             String
@@ -211,9 +211,9 @@ enum PostValue {
 
 model PostMedia {
   postId              Int             @map("post_id")
-  post                Post            @relation(fields: [postId], references: [id])
+  post                Post            @relation(fields: [postId], references: [id], onDelete: Cascade)
   mediaId             Int             @map("media_id")
-  media               Media           @relation(fields: [mediaId], references: [id])
+  media               Media           @relation(fields: [mediaId], references: [id], onDelete: Cascade)
 
   @@id([postId, mediaId])
   @@map("post_media")
@@ -221,9 +221,9 @@ model PostMedia {
 
 model ProductMedia {
   productId           Int             @map("product_id")
-  product             Product         @relation(fields: [productId], references: [id])
+  product             Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
   mediaId             Int             @unique @map("media_id")
-  media               Media           @relation(fields: [mediaId], references: [id])
+  media               Media           @relation(fields: [mediaId], references: [id], onDelete: Cascade)
 
   @@id([productId, mediaId])
   @@map("product_media")

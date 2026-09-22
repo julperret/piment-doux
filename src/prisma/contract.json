@@ -2753,6 +2753,7 @@
               },
               "foreignKeys": [
                 {
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "post_id"
@@ -2769,6 +2770,7 @@
                   }
                 },
                 {
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "media_id"
@@ -2909,6 +2911,7 @@
                   }
                 },
                 {
+                  "onDelete": "setNull",
                   "source": {
                     "columns": [
                       "cover_media_id"
@@ -2971,6 +2974,7 @@
               },
               "foreignKeys": [
                 {
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "product_id"
@@ -2987,6 +2991,7 @@
                   }
                 },
                 {
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "media_id"
@@ -3156,6 +3161,7 @@
               },
               "foreignKeys": [
                 {
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "user_id"
@@ -3335,7 +3341,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "0903cb4e3151268683f281a87efe7bc11b367d6a0a2f526846144c5e5f27eb31"
+    "storageHash": "4886ef94b3011b4b4be5c85e6840494c4183d764c32fe14dbb6ec9487fd0e3db"
   },
   "capabilities": {
     "postgres": {
