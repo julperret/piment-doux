@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'4886ef94b3011b4b4be5c85e6840494c4183d764c32fe14dbb6ec9487fd0e3db'>;
+  StorageHashBase<'cf6a31fe12ecb996119381ad652f624ae480927a92639f0a11a94b02232b554d'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -1536,12 +1536,18 @@ type ContractBase = Omit<
                 };
               };
               primaryKey: { readonly columns: readonly ['product_id', 'media_id'] };
-              uniques: readonly [{ readonly columns: readonly ['media_id'] }];
+              uniques: readonly [];
               indexes: readonly [
                 {
                   readonly name: 'product_media_product_id_idx_22a2b7d2';
                   readonly prefix: 'product_media_product_id_idx';
                   readonly columns: readonly ['product_id'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'product_media_media_id_idx_495ca900';
+                  readonly prefix: 'product_media_media_id_idx';
+                  readonly columns: readonly ['media_id'];
                   readonly unique: false;
                 },
               ];

@@ -222,7 +222,7 @@ model PostMedia {
 model ProductMedia {
   productId           Int             @map("product_id")
   product             Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
-  mediaId             Int             @unique @map("media_id")
+  mediaId             Int             @map("media_id")
   media               Media           @relation(fields: [mediaId], references: [id], onDelete: Cascade)
 
   @@id([productId, mediaId])

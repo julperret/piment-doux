@@ -3011,6 +3011,14 @@
               "indexes": [
                 {
                   "columns": [
+                    "media_id"
+                  ],
+                  "name": "product_media_media_id_idx_495ca900",
+                  "prefix": "product_media_media_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
                     "product_id"
                   ],
                   "name": "product_media_product_id_idx_22a2b7d2",
@@ -3024,13 +3032,7 @@
                   "media_id"
                 ]
               },
-              "uniques": [
-                {
-                  "columns": [
-                    "media_id"
-                  ]
-                }
-              ]
+              "uniques": []
             },
             "products": {
               "columns": {
@@ -3341,7 +3343,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "4886ef94b3011b4b4be5c85e6840494c4183d764c32fe14dbb6ec9487fd0e3db"
+    "storageHash": "cf6a31fe12ecb996119381ad652f624ae480927a92639f0a11a94b02232b554d"
   },
   "capabilities": {
     "postgres": {
