@@ -15,6 +15,7 @@ model User {
   orders            Order[]
   tokens            Token[]
   posts             Post[]
+  inquiries         Inquiry[]
 
   @@map("users")
 }
@@ -125,6 +126,26 @@ model Token {
   usedAt              Timestamptz?    @map("used_at")
 
   @@map("tokens")
+}
+
+model Inquiry {
+  id                  Int             @id @default(autoincrement())
+  userId              Int             @map("user_id")
+  user                User            @relation(fields: [userId], references: [id])
+  status              InquiryValue    @default(new)
+  message             String
+  eventDate           Date?           @map("event_date")
+  guestCount          Int?            @map("guest_count")
+  createdAt           Timestamptz     @default(now()) @map("created_at")
+  updatedAt           Timestamptz?    @map("updated_at")
+
+  @@map("inquiries")
+}
+
+enum InquiryValue {
+  @@type("pg/text@1")
+  new
+  handled
 }
 
 model Media {

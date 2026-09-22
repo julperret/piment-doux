@@ -8,6 +8,10 @@
       "model": "Address",
       "namespace": "public"
     },
+    "inquiries": {
+      "model": "Inquiry",
+      "namespace": "public"
+    },
     "media": {
       "model": "Media",
       "namespace": "public"
@@ -53,6 +57,19 @@
     "namespaces": {
       "public": {
         "enum": {
+          "InquiryValue": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "new",
+                "value": "new"
+              },
+              {
+                "name": "handled",
+                "value": "handled"
+              }
+            ]
+          },
           "PostValue": {
             "codecId": "pg/text@1",
             "members": [
@@ -258,6 +275,120 @@
               },
               "namespaceId": "public",
               "table": "addresses"
+            }
+          },
+          "Inquiry": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "eventDate": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/date-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "guestCount": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "message": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "InquiryValue",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "updatedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "eventDate": {
+                  "column": "event_date"
+                },
+                "guestCount": {
+                  "column": "guest_count"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "message": {
+                  "column": "message"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "updatedAt": {
+                  "column": "updated_at"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "inquiries"
             }
           },
           "Media": {
@@ -1497,6 +1628,21 @@
                   "namespace": "public"
                 }
               },
+              "inquiries": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "Inquiry",
+                  "namespace": "public"
+                }
+              },
               "orders": {
                 "cardinality": "1:N",
                 "on": {
@@ -1693,6 +1839,109 @@
                   ],
                   "name": "addresses_user_id_idx_6c952402",
                   "prefix": "addresses_user_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "inquiries": {
+              "checks": [
+                {
+                  "expression": "\"status\" IN ('new', 'handled')",
+                  "name": "inquiries_status_check_b4d44f3f",
+                  "prefix": "inquiries_status_check"
+                }
+              ],
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "event_date": {
+                  "codecId": "pg/date-temporal@1",
+                  "nativeType": "date",
+                  "nullable": true
+                },
+                "guest_count": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "message": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "new"
+                  },
+                  "nativeType": "text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "InquiryValue",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "updated_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "user_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "inquiries"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "users"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "user_id"
+                  ],
+                  "name": "inquiries_user_id_idx_6c952402",
+                  "prefix": "inquiries_user_id_idx",
                   "unique": false
                 }
               ],
@@ -2663,6 +2912,13 @@
             }
           },
           "valueSet": {
+            "InquiryValue": {
+              "kind": "valueSet",
+              "values": [
+                "new",
+                "handled"
+              ]
+            },
             "PostValue": {
               "kind": "valueSet",
               "values": [
@@ -2695,7 +2951,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "5587745778ddbd831178bf20f005533e638c217027b7cac45f9f1abe4e105b15"
+    "storageHash": "ba65076657a0510356ab47ec58f0ba3bc7a028f83d37bd0525130e84a78f7c2b"
   },
   "capabilities": {
     "postgres": {
