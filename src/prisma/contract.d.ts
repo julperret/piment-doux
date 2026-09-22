@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'ba65076657a0510356ab47ec58f0ba3bc7a028f83d37bd0525130e84a78f7c2b'>;
+  StorageHashBase<'b013fafdf32373129c794f8f5dbc6478c439d1825c2e129163f469544805fe5b'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -274,16 +274,19 @@ export type FieldOutputTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
       readonly status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+      readonly deliveryFirstName: Varchar<50>;
+      readonly deliveryLastName: Varchar<50>;
       readonly deliveryStreet: Varchar<100>;
       readonly deliveryCity: Varchar<50>;
       readonly deliveryPostalCode: Varchar<20>;
       readonly deliveryCountry: Varchar<50>;
       readonly deliveryPhone: Varchar<20>;
+      readonly billingFirstName: Varchar<50>;
+      readonly billingLastName: Varchar<50>;
       readonly billingStreet: Varchar<100>;
       readonly billingCity: Varchar<50>;
       readonly billingPostalCode: Varchar<20>;
       readonly billingCountry: Varchar<50>;
-      readonly billingPhone: Varchar<20>;
       readonly paidAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
@@ -390,16 +393,19 @@ export type FieldInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
       readonly status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+      readonly deliveryFirstName: CodecTypes['sql/varchar@1']['input'];
+      readonly deliveryLastName: CodecTypes['sql/varchar@1']['input'];
       readonly deliveryStreet: CodecTypes['sql/varchar@1']['input'];
       readonly deliveryCity: CodecTypes['sql/varchar@1']['input'];
       readonly deliveryPostalCode: CodecTypes['sql/varchar@1']['input'];
       readonly deliveryCountry: CodecTypes['sql/varchar@1']['input'];
       readonly deliveryPhone: CodecTypes['sql/varchar@1']['input'];
+      readonly billingFirstName: CodecTypes['sql/varchar@1']['input'];
+      readonly billingLastName: CodecTypes['sql/varchar@1']['input'];
       readonly billingStreet: CodecTypes['sql/varchar@1']['input'];
       readonly billingCity: CodecTypes['sql/varchar@1']['input'];
       readonly billingPostalCode: CodecTypes['sql/varchar@1']['input'];
       readonly billingCountry: CodecTypes['sql/varchar@1']['input'];
-      readonly billingPhone: CodecTypes['sql/varchar@1']['input'];
       readonly paidAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
@@ -518,12 +524,15 @@ export type StorageColumnTypes = {
     readonly orders: {
       readonly billing_city: Varchar<50>;
       readonly billing_country: Varchar<50>;
-      readonly billing_phone: Varchar<20>;
+      readonly billing_first_name: Varchar<50>;
+      readonly billing_last_name: Varchar<50>;
       readonly billing_postal_code: Varchar<20>;
       readonly billing_street: Varchar<100>;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly delivery_city: Varchar<50>;
       readonly delivery_country: Varchar<50>;
+      readonly delivery_first_name: Varchar<50>;
+      readonly delivery_last_name: Varchar<50>;
       readonly delivery_phone: Varchar<20>;
       readonly delivery_postal_code: Varchar<20>;
       readonly delivery_street: Varchar<100>;
@@ -634,12 +643,15 @@ export type StorageColumnInputTypes = {
     readonly orders: {
       readonly billing_city: CodecTypes['sql/varchar@1']['input'];
       readonly billing_country: CodecTypes['sql/varchar@1']['input'];
-      readonly billing_phone: CodecTypes['sql/varchar@1']['input'];
+      readonly billing_first_name: CodecTypes['sql/varchar@1']['input'];
+      readonly billing_last_name: CodecTypes['sql/varchar@1']['input'];
       readonly billing_postal_code: CodecTypes['sql/varchar@1']['input'];
       readonly billing_street: CodecTypes['sql/varchar@1']['input'];
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly delivery_city: CodecTypes['sql/varchar@1']['input'];
       readonly delivery_country: CodecTypes['sql/varchar@1']['input'];
+      readonly delivery_first_name: CodecTypes['sql/varchar@1']['input'];
+      readonly delivery_last_name: CodecTypes['sql/varchar@1']['input'];
       readonly delivery_phone: CodecTypes['sql/varchar@1']['input'];
       readonly delivery_postal_code: CodecTypes['sql/varchar@1']['input'];
       readonly delivery_street: CodecTypes['sql/varchar@1']['input'];
@@ -1079,6 +1091,18 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
+                readonly delivery_first_name: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 50 };
+                };
+                readonly delivery_last_name: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 50 };
+                };
                 readonly delivery_street: {
                   readonly nativeType: 'character varying';
                   readonly codecId: 'sql/varchar@1';
@@ -1109,6 +1133,18 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly typeParams: { readonly length: 20 };
                 };
+                readonly billing_first_name: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 50 };
+                };
+                readonly billing_last_name: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 50 };
+                };
                 readonly billing_street: {
                   readonly nativeType: 'character varying';
                   readonly codecId: 'sql/varchar@1';
@@ -1132,12 +1168,6 @@ type ContractBase = Omit<
                   readonly codecId: 'sql/varchar@1';
                   readonly nullable: false;
                   readonly typeParams: { readonly length: 50 };
-                };
-                readonly billing_phone: {
-                  readonly nativeType: 'character varying';
-                  readonly codecId: 'sql/varchar@1';
-                  readonly nullable: false;
-                  readonly typeParams: { readonly length: 20 };
                 };
                 readonly paid_at: {
                   readonly nativeType: 'timestamptz';
@@ -1922,6 +1952,22 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly deliveryFirstName: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 50 };
+                };
+              };
+              readonly deliveryLastName: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 50 };
+                };
+              };
               readonly deliveryStreet: {
                 readonly nullable: false;
                 readonly type: {
@@ -1962,6 +2008,22 @@ type ContractBase = Omit<
                   readonly typeParams: { readonly length: 20 };
                 };
               };
+              readonly billingFirstName: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 50 };
+                };
+              };
+              readonly billingLastName: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 50 };
+                };
+              };
               readonly billingStreet: {
                 readonly nullable: false;
                 readonly type: {
@@ -1992,14 +2054,6 @@ type ContractBase = Omit<
                   readonly kind: 'scalar';
                   readonly codecId: 'sql/varchar@1';
                   readonly typeParams: { readonly length: 50 };
-                };
-              };
-              readonly billingPhone: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'sql/varchar@1';
-                  readonly typeParams: { readonly length: 20 };
                 };
               };
               readonly paidAt: {
@@ -2063,16 +2117,19 @@ type ContractBase = Omit<
                 readonly id: { readonly column: 'id' };
                 readonly userId: { readonly column: 'user_id' };
                 readonly status: { readonly column: 'status' };
+                readonly deliveryFirstName: { readonly column: 'delivery_first_name' };
+                readonly deliveryLastName: { readonly column: 'delivery_last_name' };
                 readonly deliveryStreet: { readonly column: 'delivery_street' };
                 readonly deliveryCity: { readonly column: 'delivery_city' };
                 readonly deliveryPostalCode: { readonly column: 'delivery_postal_code' };
                 readonly deliveryCountry: { readonly column: 'delivery_country' };
                 readonly deliveryPhone: { readonly column: 'delivery_phone' };
+                readonly billingFirstName: { readonly column: 'billing_first_name' };
+                readonly billingLastName: { readonly column: 'billing_last_name' };
                 readonly billingStreet: { readonly column: 'billing_street' };
                 readonly billingCity: { readonly column: 'billing_city' };
                 readonly billingPostalCode: { readonly column: 'billing_postal_code' };
                 readonly billingCountry: { readonly column: 'billing_country' };
-                readonly billingPhone: { readonly column: 'billing_phone' };
                 readonly paidAt: { readonly column: 'paid_at' };
                 readonly createdAt: { readonly column: 'created_at' };
                 readonly updatedAt: { readonly column: 'updated_at' };

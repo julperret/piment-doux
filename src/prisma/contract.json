@@ -542,13 +542,23 @@
                   }
                 }
               },
-              "billingPhone": {
+              "billingFirstName": {
                 "nullable": false,
                 "type": {
                   "codecId": "sql/varchar@1",
                   "kind": "scalar",
                   "typeParams": {
-                    "length": 20
+                    "length": 50
+                  }
+                }
+              },
+              "billingLastName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 50
                   }
                 }
               },
@@ -590,6 +600,26 @@
                 }
               },
               "deliveryCountry": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 50
+                  }
+                }
+              },
+              "deliveryFirstName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 50
+                  }
+                }
+              },
+              "deliveryLastName": {
                 "nullable": false,
                 "type": {
                   "codecId": "sql/varchar@1",
@@ -727,8 +757,11 @@
                 "billingCountry": {
                   "column": "billing_country"
                 },
-                "billingPhone": {
-                  "column": "billing_phone"
+                "billingFirstName": {
+                  "column": "billing_first_name"
+                },
+                "billingLastName": {
+                  "column": "billing_last_name"
                 },
                 "billingPostalCode": {
                   "column": "billing_postal_code"
@@ -744,6 +777,12 @@
                 },
                 "deliveryCountry": {
                   "column": "delivery_country"
+                },
+                "deliveryFirstName": {
+                  "column": "delivery_first_name"
+                },
+                "deliveryLastName": {
+                  "column": "delivery_last_name"
                 },
                 "deliveryPhone": {
                   "column": "delivery_phone"
@@ -2210,12 +2249,20 @@
                     "length": 50
                   }
                 },
-                "billing_phone": {
+                "billing_first_name": {
                   "codecId": "sql/varchar@1",
                   "nativeType": "character varying",
                   "nullable": false,
                   "typeParams": {
-                    "length": 20
+                    "length": 50
+                  }
+                },
+                "billing_last_name": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 50
                   }
                 },
                 "billing_postal_code": {
@@ -2252,6 +2299,22 @@
                   }
                 },
                 "delivery_country": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 50
+                  }
+                },
+                "delivery_first_name": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 50
+                  }
+                },
+                "delivery_last_name": {
                   "codecId": "sql/varchar@1",
                   "nativeType": "character varying",
                   "nullable": false,
@@ -2951,7 +3014,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "ba65076657a0510356ab47ec58f0ba3bc7a028f83d37bd0525130e84a78f7c2b"
+    "storageHash": "b013fafdf32373129c794f8f5dbc6478c439d1825c2e129163f469544805fe5b"
   },
   "capabilities": {
     "postgres": {
