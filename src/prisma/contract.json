@@ -12,6 +12,10 @@
       "model": "Inquiry",
       "namespace": "public"
     },
+    "invoices": {
+      "model": "Invoice",
+      "namespace": "public"
+    },
     "media": {
       "model": "Media",
       "namespace": "public"
@@ -391,6 +395,176 @@
               "table": "inquiries"
             }
           },
+          "Invoice": {
+            "fields": {
+              "billingCity": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 50
+                  }
+                }
+              },
+              "billingCountry": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 50
+                  }
+                }
+              },
+              "billingFirstName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 50
+                  }
+                }
+              },
+              "billingLastName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 50
+                  }
+                }
+              },
+              "billingPostalCode": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 20
+                  }
+                }
+              },
+              "billingStreet": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 100
+                  }
+                }
+              },
+              "fiscalYear": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "issuedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "orderId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "sequenceNumber": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "totalAmount": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "precision": 10,
+                    "scale": 2
+                  }
+                }
+              }
+            },
+            "relations": {
+              "order": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "orderId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Order",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "billingCity": {
+                  "column": "billing_city"
+                },
+                "billingCountry": {
+                  "column": "billing_country"
+                },
+                "billingFirstName": {
+                  "column": "billing_first_name"
+                },
+                "billingLastName": {
+                  "column": "billing_last_name"
+                },
+                "billingPostalCode": {
+                  "column": "billing_postal_code"
+                },
+                "billingStreet": {
+                  "column": "billing_street"
+                },
+                "fiscalYear": {
+                  "column": "fiscal_year"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "issuedAt": {
+                  "column": "issued_at"
+                },
+                "orderId": {
+                  "column": "order_id"
+                },
+                "sequenceNumber": {
+                  "column": "sequence_number"
+                },
+                "totalAmount": {
+                  "column": "total_amount"
+                }
+              },
+              "namespaceId": "public",
+              "table": "invoices"
+            }
+          },
           "Media": {
             "fields": {
               "altText": {
@@ -702,6 +876,22 @@
               }
             },
             "relations": {
+              "invoice": {
+                "cardinality": "1:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "orderId"
+                  ]
+                },
+                "to": {
+                  "model": "Invoice",
+                  "namespace": "public"
+                }
+              },
               "orderLines": {
                 "cardinality": "1:N",
                 "on": {
@@ -1991,6 +2181,137 @@
               },
               "uniques": []
             },
+            "invoices": {
+              "columns": {
+                "billing_city": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 50
+                  }
+                },
+                "billing_country": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 50
+                  }
+                },
+                "billing_first_name": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 50
+                  }
+                },
+                "billing_last_name": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 50
+                  }
+                },
+                "billing_postal_code": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 20
+                  }
+                },
+                "billing_street": {
+                  "codecId": "sql/varchar@1",
+                  "nativeType": "character varying",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 100
+                  }
+                },
+                "fiscal_year": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "issued_at": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "order_id": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "sequence_number": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "total_amount": {
+                  "codecId": "pg/numeric@1",
+                  "nativeType": "numeric",
+                  "nullable": false,
+                  "typeParams": {
+                    "precision": 10,
+                    "scale": 2
+                  }
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "order_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "invoices"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "orders"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "order_id"
+                  ]
+                },
+                {
+                  "columns": [
+                    "fiscal_year",
+                    "sequence_number"
+                  ]
+                }
+              ]
+            },
             "media": {
               "columns": {
                 "alt_text": {
@@ -3014,7 +3335,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "b013fafdf32373129c794f8f5dbc6478c439d1825c2e129163f469544805fe5b"
+    "storageHash": "0903cb4e3151268683f281a87efe7bc11b367d6a0a2f526846144c5e5f27eb31"
   },
   "capabilities": {
     "postgres": {

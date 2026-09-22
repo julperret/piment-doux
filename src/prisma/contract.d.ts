@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'b013fafdf32373129c794f8f5dbc6478c439d1825c2e129163f469544805fe5b'>;
+  StorageHashBase<'0903cb4e3151268683f281a87efe7bc11b367d6a0a2f526846144c5e5f27eb31'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -263,6 +263,20 @@ export type FieldOutputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
     };
+    readonly Invoice: {
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly orderId: CodecTypes['pg/int4@1']['output'];
+      readonly fiscalYear: CodecTypes['pg/int4@1']['output'];
+      readonly sequenceNumber: CodecTypes['pg/int4@1']['output'];
+      readonly billingFirstName: Varchar<50>;
+      readonly billingLastName: Varchar<50>;
+      readonly billingStreet: Varchar<100>;
+      readonly billingCity: Varchar<50>;
+      readonly billingPostalCode: Varchar<20>;
+      readonly billingCountry: Varchar<50>;
+      readonly totalAmount: Numeric<10, 2>;
+      readonly issuedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    };
     readonly Media: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly filePath: Varchar<2048>;
@@ -381,6 +395,20 @@ export type FieldInputTypes = {
       readonly guestCount: CodecTypes['pg/int4@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
+    };
+    readonly Invoice: {
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly orderId: CodecTypes['pg/int4@1']['input'];
+      readonly fiscalYear: CodecTypes['pg/int4@1']['input'];
+      readonly sequenceNumber: CodecTypes['pg/int4@1']['input'];
+      readonly billingFirstName: CodecTypes['sql/varchar@1']['input'];
+      readonly billingLastName: CodecTypes['sql/varchar@1']['input'];
+      readonly billingStreet: CodecTypes['sql/varchar@1']['input'];
+      readonly billingCity: CodecTypes['sql/varchar@1']['input'];
+      readonly billingPostalCode: CodecTypes['sql/varchar@1']['input'];
+      readonly billingCountry: CodecTypes['sql/varchar@1']['input'];
+      readonly totalAmount: CodecTypes['pg/numeric@1']['input'];
+      readonly issuedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly Media: {
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -501,6 +529,20 @@ export type StorageColumnTypes = {
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
       readonly user_id: CodecTypes['pg/int4@1']['output'];
     };
+    readonly invoices: {
+      readonly billing_city: Varchar<50>;
+      readonly billing_country: Varchar<50>;
+      readonly billing_first_name: Varchar<50>;
+      readonly billing_last_name: Varchar<50>;
+      readonly billing_postal_code: Varchar<20>;
+      readonly billing_street: Varchar<100>;
+      readonly fiscal_year: CodecTypes['pg/int4@1']['output'];
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly issued_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly order_id: CodecTypes['pg/int4@1']['output'];
+      readonly sequence_number: CodecTypes['pg/int4@1']['output'];
+      readonly total_amount: Numeric<10, 2>;
+    };
     readonly media: {
       readonly alt_text: Varchar<255>;
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -619,6 +661,20 @@ export type StorageColumnInputTypes = {
       readonly status: 'new' | 'handled';
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
       readonly user_id: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly invoices: {
+      readonly billing_city: CodecTypes['sql/varchar@1']['input'];
+      readonly billing_country: CodecTypes['sql/varchar@1']['input'];
+      readonly billing_first_name: CodecTypes['sql/varchar@1']['input'];
+      readonly billing_last_name: CodecTypes['sql/varchar@1']['input'];
+      readonly billing_postal_code: CodecTypes['sql/varchar@1']['input'];
+      readonly billing_street: CodecTypes['sql/varchar@1']['input'];
+      readonly fiscal_year: CodecTypes['pg/int4@1']['input'];
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly issued_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly order_id: CodecTypes['pg/int4@1']['input'];
+      readonly sequence_number: CodecTypes['pg/int4@1']['input'];
+      readonly total_amount: CodecTypes['pg/numeric@1']['input'];
     };
     readonly media: {
       readonly alt_text: CodecTypes['sql/varchar@1']['input'];
@@ -894,6 +950,102 @@ type ContractBase = Omit<
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
                     readonly tableName: 'users';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly invoices: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                };
+                readonly order_id: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly fiscal_year: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly sequence_number: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly billing_first_name: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 50 };
+                };
+                readonly billing_last_name: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 50 };
+                };
+                readonly billing_street: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 100 };
+                };
+                readonly billing_city: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 50 };
+                };
+                readonly billing_postal_code: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 20 };
+                };
+                readonly billing_country: {
+                  readonly nativeType: 'character varying';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 50 };
+                };
+                readonly total_amount: {
+                  readonly nativeType: 'numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly precision: 10; readonly scale: 2 };
+                };
+                readonly issued_at: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [
+                { readonly columns: readonly ['order_id'] },
+                { readonly columns: readonly ['fiscal_year', 'sequence_number'] },
+              ];
+              indexes: readonly [];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'invoices';
+                    readonly columns: readonly ['order_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'orders';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -1661,6 +1813,7 @@ type ContractBase = Omit<
     readonly products: { readonly namespace: 'public' & NamespaceId; readonly model: 'Product' };
     readonly addresses: { readonly namespace: 'public' & NamespaceId; readonly model: 'Address' };
     readonly orders: { readonly namespace: 'public' & NamespaceId; readonly model: 'Order' };
+    readonly invoices: { readonly namespace: 'public' & NamespaceId; readonly model: 'Invoice' };
     readonly order_statuses: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'OrderStatus';
@@ -1849,6 +2002,120 @@ type ContractBase = Omit<
                 readonly guestCount: { readonly column: 'guest_count' };
                 readonly createdAt: { readonly column: 'created_at' };
                 readonly updatedAt: { readonly column: 'updated_at' };
+              };
+            };
+          };
+          readonly Invoice: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly orderId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly fiscalYear: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly sequenceNumber: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly billingFirstName: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 50 };
+                };
+              };
+              readonly billingLastName: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 50 };
+                };
+              };
+              readonly billingStreet: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 100 };
+                };
+              };
+              readonly billingCity: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 50 };
+                };
+              };
+              readonly billingPostalCode: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 20 };
+                };
+              };
+              readonly billingCountry: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 50 };
+                };
+              };
+              readonly totalAmount: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly typeParams: { readonly precision: 10; readonly scale: 2 };
+                };
+              };
+              readonly issuedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly order: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Order';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['orderId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'invoices';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly orderId: { readonly column: 'order_id' };
+                readonly fiscalYear: { readonly column: 'fiscal_year' };
+                readonly sequenceNumber: { readonly column: 'sequence_number' };
+                readonly billingFirstName: { readonly column: 'billing_first_name' };
+                readonly billingLastName: { readonly column: 'billing_last_name' };
+                readonly billingStreet: { readonly column: 'billing_street' };
+                readonly billingCity: { readonly column: 'billing_city' };
+                readonly billingPostalCode: { readonly column: 'billing_postal_code' };
+                readonly billingCountry: { readonly column: 'billing_country' };
+                readonly totalAmount: { readonly column: 'total_amount' };
+                readonly issuedAt: { readonly column: 'issued_at' };
               };
             };
           };
@@ -2079,6 +2346,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly invoice: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Invoice';
+                };
+                readonly cardinality: '1:1';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['orderId'];
+                };
+              };
               readonly orderLines: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
