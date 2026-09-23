@@ -42,6 +42,8 @@ model Product {
   orderLines          OrderLine[]
   media               Media[]
 
+  @@check(expression: "stock_quantity >= 0", name: "products_stock_non_negative")
+  @@check(expression: "price >= 0", name: "products_price_non_negative")
   @@map("products")
 }
 

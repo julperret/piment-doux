@@ -3064,6 +3064,18 @@
               "uniques": []
             },
             "products": {
+              "checks": [
+                {
+                  "expression": "price >= 0",
+                  "name": "products_price_non_negative_faabb23d",
+                  "prefix": "products_price_non_negative"
+                },
+                {
+                  "expression": "stock_quantity >= 0",
+                  "name": "products_stock_non_negative_eb99aa6a",
+                  "prefix": "products_stock_non_negative"
+                }
+              ],
               "columns": {
                 "created_at": {
                   "codecId": "pg/timestamptz-temporal@1",
@@ -3382,7 +3394,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "798dcac547c08efa4da9ce8be945e0bd42c24d32bfca036c11ad066adbf37d2c"
+    "storageHash": "e744e3ee7e2e82828c6cfdb85d2fdfed3e3608a466ebc5412ef5a94b932389d1"
   },
   "capabilities": {
     "postgres": {
