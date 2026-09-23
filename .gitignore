@@ -2,3 +2,7 @@ node_modules/
 dist/
 .env
 *.lo1
+.agents/
+.claude/
+.cursor/
+.devin/
