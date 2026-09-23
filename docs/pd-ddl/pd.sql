@@ -70,22 +70,6 @@ CREATE TABLE orders (
     CHECK (NOT (status IN ('processing', 'shipped', 'delivered') AND paid_at IS NULL))
 );
 
-CREATE TABLE invoices (
-    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    order_id INTEGER NOT NULL UNIQUE REFERENCES orders(id),
-    fiscal_year INTEGER NOT NULL,
-    sequence_number INTEGER NOT NULL CHECK (sequence_number > 0),
-    billing_first_name VARCHAR(50) NOT NULL,
-    billing_last_name VARCHAR(50) NOT NULL,
-    billing_street VARCHAR(100) NOT NULL,
-    billing_city VARCHAR(50) NOT NULL,
-    billing_postal_code VARCHAR(20) NOT NULL,
-    billing_country VARCHAR(50) NOT NULL,
-    total_amount DECIMAL(10, 2) NOT NULL CHECK (total_amount >= 0),
-    issued_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT invoices_number_unique UNIQUE (fiscal_year, sequence_number)
-);
-
 CREATE TABLE order_statuses (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     order_id INTEGER NOT NULL REFERENCES orders(id),
@@ -101,6 +85,22 @@ CREATE TABLE order_lines (
     discount_percent DECIMAL(5, 2) NOT NULL DEFAULT 0 CHECK (discount_percent >= 0 AND discount_percent <= 100),
     unit_price DECIMAL(10, 2) NOT NULL CHECK (unit_price >= 0),
     PRIMARY KEY (order_id, product_id)
+);
+
+CREATE TABLE invoices (
+    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    order_id INTEGER NOT NULL UNIQUE REFERENCES orders(id),
+    fiscal_year INTEGER NOT NULL,
+    sequence_number INTEGER NOT NULL CHECK (sequence_number > 0),
+    billing_first_name VARCHAR(50) NOT NULL,
+    billing_last_name VARCHAR(50) NOT NULL,
+    billing_street VARCHAR(100) NOT NULL,
+    billing_city VARCHAR(50) NOT NULL,
+    billing_postal_code VARCHAR(20) NOT NULL,
+    billing_country VARCHAR(50) NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL CHECK (total_amount >= 0),
+    issued_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT invoices_number_unique UNIQUE (fiscal_year, sequence_number)
 );
 
 CREATE TABLE tokens (
