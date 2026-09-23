@@ -3235,6 +3235,16 @@
             "users": {
               "checks": [
                 {
+                  "expression": "email LIKE '%_@_%._%'",
+                  "name": "users_email_format_58ffc0a7",
+                  "prefix": "users_email_format"
+                },
+                {
+                  "expression": "(role = 'guest' AND password_hash IS NULL) OR (role <> 'guest' AND password_hash IS NOT NULL)",
+                  "name": "users_guest_no_password_4605cda1",
+                  "prefix": "users_guest_no_password"
+                },
+                {
                   "expression": "\"role\" IN ('user', 'guest', 'admin')",
                   "name": "users_role_check_e56de5de",
                   "prefix": "users_role_check"
@@ -3372,7 +3382,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "c50a8809b64af0a03391fe5ede226ce1ec3f07ae0627616cd934e74230b72829"
+    "storageHash": "798dcac547c08efa4da9ce8be945e0bd42c24d32bfca036c11ad066adbf37d2c"
   },
   "capabilities": {
     "postgres": {

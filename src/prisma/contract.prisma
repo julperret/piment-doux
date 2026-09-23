@@ -4,7 +4,7 @@ model User {
   id                Int               @id @default(autoincrement())
   lastName          VarChar(50)       @map("last_name")
   firstName         VarChar(50)       @map("first_name")
-  email             VarChar(300)   
+  email             VarChar(300)  
   passwordHash      VarChar(255)?     @map("password_hash")
   role              Role              @default(User)
   emailVerifiedAt   Timestamptz?      @map("email_verified_at")
@@ -16,7 +16,9 @@ model User {
   tokens            Token[]
   posts             Post[]
   inquiries         Inquiry[]
-
+  
+  @@check(expression: "email LIKE '%_@_%._%'", name: "users_email_format")
+  @@check(expression: "(role = 'guest' AND password_hash IS NULL) OR (role <> 'guest' AND password_hash IS NOT NULL)", name: "users_guest_no_password")
   @@map("users")
 }
 
