@@ -2704,6 +2704,10 @@
                 },
                 "status": {
                   "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "pending"
+                  },
                   "nativeType": "text",
                   "nullable": false,
                   "valueSet": {
@@ -2886,6 +2890,10 @@
                 },
                 "status": {
                   "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "draft"
+                  },
                   "nativeType": "text",
                   "nullable": false,
                   "valueSet": {
@@ -3364,7 +3372,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "c7bc2b8d73a95ab41dffec4d1fdaece3a7ea6bdd652536c15aca949b2e2d5e89"
+    "storageHash": "c50a8809b64af0a03391fe5ede226ce1ec3f07ae0627616cd934e74230b72829"
   },
   "capabilities": {
     "postgres": {

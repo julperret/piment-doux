@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'c7bc2b8d73a95ab41dffec4d1fdaece3a7ea6bdd652536c15aca949b2e2d5e89'>;
+  StorageHashBase<'c50a8809b64af0a03391fe5ede226ce1ec3f07ae0627616cd934e74230b72829'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -1252,6 +1252,10 @@ type ContractBase = Omit<
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'pending'>;
+                  };
                 };
                 readonly delivery_first_name: {
                   readonly nativeType: 'character varying';
@@ -1471,6 +1475,10 @@ type ContractBase = Omit<
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'draft'>;
+                  };
                 };
                 readonly published_at: {
                   readonly nativeType: 'timestamptz';
@@ -1829,7 +1837,6 @@ type ContractBase = Omit<
     readonly products: { readonly namespace: 'public' & NamespaceId; readonly model: 'Product' };
     readonly addresses: { readonly namespace: 'public' & NamespaceId; readonly model: 'Address' };
     readonly orders: { readonly namespace: 'public' & NamespaceId; readonly model: 'Order' };
-    readonly invoices: { readonly namespace: 'public' & NamespaceId; readonly model: 'Invoice' };
     readonly order_statuses: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'OrderStatus';
@@ -1838,6 +1845,7 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'OrderLine';
     };
+    readonly invoices: { readonly namespace: 'public' & NamespaceId; readonly model: 'Invoice' };
     readonly tokens: { readonly namespace: 'public' & NamespaceId; readonly model: 'Token' };
     readonly inquiries: { readonly namespace: 'public' & NamespaceId; readonly model: 'Inquiry' };
     readonly media: { readonly namespace: 'public' & NamespaceId; readonly model: 'Media' };

@@ -63,7 +63,7 @@ model Order {
   id                  Int             @id @default(autoincrement())
   userId              Int             @map("user_id")
   user                User            @relation(fields: [userId], references: [id])
-  status              StatusValue
+  status              StatusValue     @default(Pending)
   deliveryFirstName   VarChar(50)     @map("delivery_first_name")
   deliveryLastName    VarChar(50)     @map("delivery_last_name")
   deliveryStreet      VarChar(100)    @map("delivery_street")
@@ -194,7 +194,7 @@ model Post {
   title               VarChar(100)
   slug                VarChar(100)    @unique
   content             String
-  status              PostValue
+  status              PostValue       @default(Draft)
   publishedAt         Timestamptz?    @map("published_at")
   createdAt           Timestamptz     @default(now()) @map("created_at")
   updatedAt           Timestamptz?    @map("updated_at")
