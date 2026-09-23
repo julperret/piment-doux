@@ -2569,6 +2569,11 @@
             "orders": {
               "checks": [
                 {
+                  "expression": "NOT (status IN ('processing', 'shipped', 'delivered') AND paid_at IS NULL)",
+                  "name": "orders_paid_at_required_49910823",
+                  "prefix": "orders_paid_at_required"
+                },
+                {
                   "expression": "\"status\" IN ('pending', 'processing', 'shipped', 'delivered', 'cancelled')",
                   "name": "orders_status_check_08123348",
                   "prefix": "orders_status_check"
@@ -3394,7 +3399,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "e744e3ee7e2e82828c6cfdb85d2fdfed3e3608a466ebc5412ef5a94b932389d1"
+    "storageHash": "680b3dc78725344d0d358e295492821d474a134a7cde8b4c3ec984fdac19b60f"
   },
   "capabilities": {
     "postgres": {
