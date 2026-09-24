@@ -144,7 +144,9 @@ model Invoice {
   issuedAt            Timestamptz     @default(now()) @map("issued_at")
 
   @@unique([fiscalYear, sequenceNumber])
-  @@map("invoices")  
+  @@check(expression: "sequence_number > 0", name: "invoices_sequence_number_positive")
+  @@check(expression: "total_amount >= 0", name: "invoices_total_amount_non_negative")
+  @@map("invoices")
 }
 
 model Token {
