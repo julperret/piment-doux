@@ -122,6 +122,9 @@ model OrderLine {
   unitPrice           Numeric(10, 2)  @map("unit_price")
 
   @@id([orderId, productId])
+  @@check(expression: "quantity > 0", name: "order_lines_quantity_positive")
+  @@check(expression: "discount_percent >= 0 AND discount_percent <= 100", name: "order_lines_discount_percent_range")
+  @@check(expression: "unit_price >= 0", name: "order_lines_unit_price_non_negative")
   @@map("order_lines")
 }
 
