@@ -2380,6 +2380,23 @@
               "uniques": []
             },
             "order_lines": {
+              "checks": [
+                {
+                  "expression": "discount_percent >= 0 AND discount_percent <= 100",
+                  "name": "order_lines_discount_percent_range_eaefd8d7",
+                  "prefix": "order_lines_discount_percent_range"
+                },
+                {
+                  "expression": "quantity > 0",
+                  "name": "order_lines_quantity_positive_4402679f",
+                  "prefix": "order_lines_quantity_positive"
+                },
+                {
+                  "expression": "unit_price >= 0",
+                  "name": "order_lines_unit_price_non_negative_3c1fb11f",
+                  "prefix": "order_lines_unit_price_non_negative"
+                }
+              ],
               "columns": {
                 "discount_percent": {
                   "codecId": "pg/numeric@1",
@@ -3399,7 +3416,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "680b3dc78725344d0d358e295492821d474a134a7cde8b4c3ec984fdac19b60f"
+    "storageHash": "da225319bb0fb96948700a730a3829500d65071cd46f8bbcca5f915935405ab1"
   },
   "capabilities": {
     "postgres": {
