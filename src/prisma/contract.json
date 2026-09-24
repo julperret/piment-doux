@@ -132,6 +132,19 @@
                 "value": "cancelled"
               }
             ]
+          },
+          "TokenType": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "EmailVerification",
+                "value": "email_verification"
+              },
+              {
+                "name": "PasswordReset",
+                "value": "password_reset"
+              }
+            ]
           }
         },
         "models": {
@@ -1685,11 +1698,14 @@
               "type": {
                 "nullable": false,
                 "type": {
-                  "codecId": "sql/varchar@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "length": 50
-                  }
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "TokenType",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               },
               "usedAt": {
@@ -3185,6 +3201,13 @@
               "uniques": []
             },
             "tokens": {
+              "checks": [
+                {
+                  "expression": "\"type\" IN ('email_verification', 'password_reset')",
+                  "name": "tokens_type_check_c88c716f",
+                  "prefix": "tokens_type_check"
+                }
+              ],
               "columns": {
                 "created_at": {
                   "codecId": "pg/timestamptz-temporal@1",
@@ -3210,11 +3233,14 @@
                   "nullable": false
                 },
                 "type": {
-                  "codecId": "sql/varchar@1",
-                  "nativeType": "character varying",
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
                   "nullable": false,
-                  "typeParams": {
-                    "length": 50
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "TokenType",
+                    "namespaceId": "public",
+                    "plane": "storage"
                   }
                 },
                 "used_at": {
@@ -3421,6 +3447,13 @@
                 "delivered",
                 "cancelled"
               ]
+            },
+            "TokenType": {
+              "kind": "valueSet",
+              "values": [
+                "email_verification",
+                "password_reset"
+              ]
             }
           }
         },
@@ -3428,7 +3461,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "d00248b9510acf4f846bf61955af9e888274399c4d4b7730d6f79ece6cfe6f7a"
+    "storageHash": "508272004b18199d0d75ad9d36127582fee303e06188d137a515593d248af08f"
   },
   "capabilities": {
     "postgres": {

@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'d00248b9510acf4f846bf61955af9e888274399c4d4b7730d6f79ece6cfe6f7a'>;
+  StorageHashBase<'508272004b18199d0d75ad9d36127582fee303e06188d137a515593d248af08f'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -354,7 +354,7 @@ export type FieldOutputTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
       readonly valueHash: Varchar<255>;
-      readonly type: Varchar<50>;
+      readonly type: 'email_verification' | 'password_reset';
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly expiresAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly usedAt: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
@@ -488,7 +488,7 @@ export type FieldInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
       readonly valueHash: CodecTypes['sql/varchar@1']['input'];
-      readonly type: CodecTypes['sql/varchar@1']['input'];
+      readonly type: 'email_verification' | 'password_reset';
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly expiresAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly usedAt: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
@@ -622,7 +622,7 @@ export type StorageColumnTypes = {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly expires_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly type: Varchar<50>;
+      readonly type: 'email_verification' | 'password_reset';
       readonly used_at: CodecTypes['pg/timestamptz-temporal@1']['output'] | null;
       readonly user_id: CodecTypes['pg/int4@1']['output'];
       readonly value_hash: Varchar<255>;
@@ -756,7 +756,7 @@ export type StorageColumnInputTypes = {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly expires_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly type: CodecTypes['sql/varchar@1']['input'];
+      readonly type: 'email_verification' | 'password_reset';
       readonly used_at: CodecTypes['pg/timestamptz-temporal@1']['input'] | null;
       readonly user_id: CodecTypes['pg/int4@1']['input'];
       readonly value_hash: CodecTypes['sql/varchar@1']['input'];
@@ -1680,10 +1680,9 @@ type ContractBase = Omit<
                   readonly typeParams: { readonly length: 255 };
                 };
                 readonly type: {
-                  readonly nativeType: 'character varying';
-                  readonly codecId: 'sql/varchar@1';
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
                   readonly nullable: false;
-                  readonly typeParams: { readonly length: 50 };
                 };
                 readonly created_at: {
                   readonly nativeType: 'timestamptz';
@@ -1821,6 +1820,10 @@ type ContractBase = Omit<
                 'delivered',
                 'cancelled',
               ];
+            };
+            readonly TokenType: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['email_verification', 'password_reset'];
             };
           };
         };
@@ -2888,11 +2891,7 @@ type ContractBase = Omit<
               };
               readonly type: {
                 readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'sql/varchar@1';
-                  readonly typeParams: { readonly length: 50 };
-                };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly createdAt: {
                 readonly nullable: false;
@@ -3100,6 +3099,13 @@ type ContractBase = Omit<
               { readonly name: 'Shipped'; readonly value: 'shipped' },
               { readonly name: 'Delivered'; readonly value: 'delivered' },
               { readonly name: 'Cancelled'; readonly value: 'cancelled' },
+            ];
+          };
+          readonly TokenType: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'EmailVerification'; readonly value: 'email_verification' },
+              { readonly name: 'PasswordReset'; readonly value: 'password_reset' },
             ];
           };
           readonly InquiryValue: {

@@ -154,12 +154,18 @@ model Token {
   userId              Int             @map("user_id")
   user                User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   valueHash           VarChar(255)    @unique @map("value_hash")
-  type                VarChar(50)
+  type                TokenType
   createdAt           Timestamptz     @default(now()) @map("created_at")
   expiresAt           Timestamptz     @map("expires_at")
   usedAt              Timestamptz?    @map("used_at")
 
   @@map("tokens")
+}
+
+enum TokenType {
+  @@type("pg/text@1")
+  EmailVerification = "email_verification"
+  PasswordReset = "password_reset"
 }
 
 model Inquiry {
