@@ -160,11 +160,11 @@ CREATE TABLE product_media (
 );
 
 -- customer order history
-CREATE INDEX orders_user_created_idx ON orders(user_id, created_at DESC);
+CREATE INDEX orders_user_created_idx ON orders(user_id, created_at);
 -- sales per product
 CREATE INDEX order_lines_product_idx ON order_lines(product_id);
 -- order status history for a given order
-CREATE INDEX order_statuses_order_changed_idx ON order_statuses(order_id, changed_at DESC);
+CREATE INDEX order_statuses_order_changed_idx ON order_statuses(order_id, changed_at);
 -- Filter orders by status in the back-office dashboard
 CREATE INDEX orders_status_idx ON orders(status);
 -- Load a user's saved addresses at checkout
@@ -172,6 +172,6 @@ CREATE INDEX addresses_user_idx ON addresses(user_id);
 -- Cleanup job: find expired unused tokens
 CREATE INDEX tokens_expires_unused_idx ON tokens(expires_at) WHERE used_at IS NULL;
 -- inquiries for a given user, ordered by creation date
-CREATE INDEX inquiries_user_created_idx ON inquiries(user_id, created_at DESC);
+CREATE INDEX inquiries_user_created_idx ON inquiries(user_id, created_at);
 -- inquiries not yet handled, ordered by creation date
-CREATE INDEX inquiries_new_created_idx ON inquiries(created_at DESC) WHERE status = 'new';
+CREATE INDEX inquiries_new_created_idx ON inquiries(created_at) WHERE status = 'new';
