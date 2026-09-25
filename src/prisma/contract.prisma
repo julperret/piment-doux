@@ -217,6 +217,7 @@ model Post {
   updatedAt           Timestamptz?    @map("updated_at")
   media               Media[]
 
+  @@check(expression: "NOT (status = 'published' AND published_at IS NULL)", name: "posts_published_at_required")
   @@map("posts")
 }
 

@@ -2896,6 +2896,11 @@
             "posts": {
               "checks": [
                 {
+                  "expression": "NOT (status = 'published' AND published_at IS NULL)",
+                  "name": "posts_published_at_required_c08a5e53",
+                  "prefix": "posts_published_at_required"
+                },
+                {
                   "expression": "\"status\" IN ('draft', 'published', 'archived')",
                   "name": "posts_status_check_6db19c90",
                   "prefix": "posts_status_check"
@@ -3466,7 +3471,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "4332ca38698a1a3213eda38aedc79a855a262e9e6d42779ab8ffd0f354b2bde5"
+    "storageHash": "84fa4c816cffb8e0c48eb3f2bcecdc58bf281668e492ba012f244da1e5090523"
   },
   "capabilities": {
     "postgres": {
