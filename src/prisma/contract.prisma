@@ -189,7 +189,7 @@ model Inquiry {
   createdAt           Timestamptz     @default(now()) @map("created_at")
   updatedAt           Timestamptz?    @map("updated_at")
 
-  @@check(expression: "guest_count > 0", name: "inquiries_guest_count_number_positive")
+  @@check(expression: "guest_count > 0", name: "inquiries_guest_count_positive")
   @@index([userId, createdAt], name: "inquiries_user_created_idx")
   @@index([createdAt], where: "status = 'new'", name: "inquiries_new_created_idx")
   @@map("inquiries")

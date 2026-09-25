@@ -2111,8 +2111,8 @@
               "checks": [
                 {
                   "expression": "guest_count > 0",
-                  "name": "inquiries_guest_count_number_positive_3cce74cf",
-                  "prefix": "inquiries_guest_count_number_positive"
+                  "name": "inquiries_guest_count_positive_3cce74cf",
+                  "prefix": "inquiries_guest_count_positive"
                 },
                 {
                   "expression": "\"status\" IN ('new', 'handled')",
@@ -3542,7 +3542,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "ea281228fb8ae8ac798169e6261477a7b6874da1ddbda12337492b52ab596574"
+    "storageHash": "9d90495e6e127312e9e041b8fa25d10e7c1808ed53b574fa883bda1eb7582081"
   },
   "capabilities": {
     "postgres": {
