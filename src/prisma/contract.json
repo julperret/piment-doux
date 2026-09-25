@@ -2201,6 +2201,24 @@
               "indexes": [
                 {
                   "columns": [
+                    "created_at"
+                  ],
+                  "name": "inquiries_new_created_idx_e21e3184",
+                  "prefix": "inquiries_new_created_idx",
+                  "unique": false,
+                  "where": "status = 'new'"
+                },
+                {
+                  "columns": [
+                    "user_id",
+                    "created_at"
+                  ],
+                  "name": "inquiries_user_created_idx_b562028f",
+                  "prefix": "inquiries_user_created_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
                     "user_id"
                   ],
                   "name": "inquiries_user_id_idx_6c952402",
@@ -2602,6 +2620,15 @@
               "indexes": [
                 {
                   "columns": [
+                    "order_id",
+                    "changed_at"
+                  ],
+                  "name": "order_statuses_order_changed_idx_7a38ef2f",
+                  "prefix": "order_statuses_order_changed_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
                     "order_id"
                   ],
                   "name": "order_statuses_order_id_idx_39ad19ad",
@@ -2802,6 +2829,14 @@
                 }
               ],
               "indexes": [
+                {
+                  "columns": [
+                    "status"
+                  ],
+                  "name": "orders_status_idx_e98638ab",
+                  "prefix": "orders_status_idx",
+                  "unique": false
+                },
                 {
                   "columns": [
                     "user_id",
@@ -3313,6 +3348,15 @@
               "indexes": [
                 {
                   "columns": [
+                    "expires_at"
+                  ],
+                  "name": "tokens_expires_unused_idx_7fd3d155",
+                  "prefix": "tokens_expires_unused_idx",
+                  "unique": false,
+                  "where": "used_at IS NULL"
+                },
+                {
+                  "columns": [
                     "user_id"
                   ],
                   "name": "tokens_user_id_idx_6c952402",
@@ -3498,7 +3542,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "56a75162e036eb046b65208109266966c5def52060b957c795cee1bc9080ae5e"
+    "storageHash": "ea281228fb8ae8ac798169e6261477a7b6874da1ddbda12337492b52ab596574"
   },
   "capabilities": {
     "postgres": {

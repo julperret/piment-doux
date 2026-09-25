@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'56a75162e036eb046b65208109266966c5def52060b957c795cee1bc9080ae5e'>;
+  StorageHashBase<'ea281228fb8ae8ac798169e6261477a7b6874da1ddbda12337492b52ab596574'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -938,6 +938,19 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
+                  readonly name: 'inquiries_user_created_idx_b562028f';
+                  readonly prefix: 'inquiries_user_created_idx';
+                  readonly columns: readonly ['user_id', 'created_at'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'inquiries_new_created_idx_e21e3184';
+                  readonly prefix: 'inquiries_new_created_idx';
+                  readonly columns: readonly ['created_at'];
+                  readonly where: "status = 'new'";
+                  readonly unique: false;
+                },
+                {
                   readonly name: 'inquiries_user_id_idx_6c952402';
                   readonly prefix: 'inquiries_user_id_idx';
                   readonly columns: readonly ['user_id'];
@@ -1211,6 +1224,12 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
+                  readonly name: 'order_statuses_order_changed_idx_7a38ef2f';
+                  readonly prefix: 'order_statuses_order_changed_idx';
+                  readonly columns: readonly ['order_id', 'changed_at'];
+                  readonly unique: false;
+                },
+                {
                   readonly name: 'order_statuses_order_id_idx_39ad19ad';
                   readonly prefix: 'order_statuses_order_id_idx';
                   readonly columns: readonly ['order_id'];
@@ -1359,6 +1378,12 @@ type ContractBase = Omit<
                   readonly name: 'orders_user_created_idx_b562028f';
                   readonly prefix: 'orders_user_created_idx';
                   readonly columns: readonly ['user_id', 'created_at'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'orders_status_idx_e98638ab';
+                  readonly prefix: 'orders_status_idx';
+                  readonly columns: readonly ['status'];
                   readonly unique: false;
                 },
                 {
@@ -1718,6 +1743,13 @@ type ContractBase = Omit<
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [{ readonly columns: readonly ['value_hash'] }];
               indexes: readonly [
+                {
+                  readonly name: 'tokens_expires_unused_idx_7fd3d155';
+                  readonly prefix: 'tokens_expires_unused_idx';
+                  readonly columns: readonly ['expires_at'];
+                  readonly where: 'used_at IS NULL';
+                  readonly unique: false;
+                },
                 {
                   readonly name: 'tokens_user_id_idx_6c952402';
                   readonly prefix: 'tokens_user_id_idx';

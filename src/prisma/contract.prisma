@@ -62,6 +62,8 @@ model Address {
   createdAt           Timestamptz     @default(now()) @map("created_at")
   updatedAt           Timestamptz?    @map("updated_at")
 
+  // addresses_user_idx is not declared: Prisma auto-creates an index on FK column user_id
+
   @@map("addresses")
 }
 
@@ -92,6 +94,7 @@ model Order {
 
   @@check(expression: "NOT (status IN ('processing', 'shipped', 'delivered') AND paid_at IS NULL)", name: "orders_paid_at_required")
   @@index([userId, createdAt], name: "orders_user_created_idx")
+  @@index([status], name: "orders_status_idx")
   @@map("orders")
 }
 
@@ -102,6 +105,7 @@ model OrderStatus {
   status              StatusValue
   changedAt           Timestamptz     @default(now()) @map("changed_at")
 
+  @@index([orderId, changedAt], name: "order_statuses_order_changed_idx")
   @@map("order_statuses")
 }
 
@@ -123,6 +127,8 @@ model OrderLine {
   quantity            Int
   discountPercent     Numeric(5, 2)   @default(0) @map("discount_percent")
   unitPrice           Numeric(10, 2)  @map("unit_price")
+
+  // order_lines_product_idx is not declared: Prisma auto-creates an index on FK column product_id
 
   @@id([orderId, productId])
   @@check(expression: "quantity > 0", name: "order_lines_quantity_positive")
@@ -162,6 +168,7 @@ model Token {
   expiresAt           Timestamptz     @map("expires_at")
   usedAt              Timestamptz?    @map("used_at")
 
+  @@index([expiresAt], where: "used_at IS NULL", name: "tokens_expires_unused_idx")
   @@map("tokens")
 }
 
@@ -183,6 +190,8 @@ model Inquiry {
   updatedAt           Timestamptz?    @map("updated_at")
 
   @@check(expression: "guest_count > 0", name: "inquiries_guest_count_number_positive")
+  @@index([userId, createdAt], name: "inquiries_user_created_idx")
+  @@index([createdAt], where: "status = 'new'", name: "inquiries_new_created_idx")
   @@map("inquiries")
 }
 
