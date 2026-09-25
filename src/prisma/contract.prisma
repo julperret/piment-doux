@@ -179,6 +179,7 @@ model Inquiry {
   createdAt           Timestamptz     @default(now()) @map("created_at")
   updatedAt           Timestamptz?    @map("updated_at")
 
+  @@check(expression: "guest_count > 0", name: "inquiries_guest_count_number_positive")
   @@map("inquiries")
 }
 
