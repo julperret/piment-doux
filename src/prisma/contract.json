@@ -3202,7 +3202,17 @@
                 }
               },
               "foreignKeys": [],
-              "indexes": [],
+              "indexes": [
+                {
+                  "columns": [
+                    "slug"
+                  ],
+                  "name": "products_slug_unique_idx_5ec954d3",
+                  "prefix": "products_slug_unique_idx",
+                  "unique": true,
+                  "where": "deleted_at IS NULL"
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -3415,7 +3425,15 @@
                 }
               },
               "foreignKeys": [],
-              "indexes": [],
+              "indexes": [
+                {
+                  "expression": "lower(email)",
+                  "name": "users_email_unique_idx_cd70324e",
+                  "prefix": "users_email_unique_idx",
+                  "unique": true,
+                  "where": "deleted_at IS NULL"
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -3471,7 +3489,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "84fa4c816cffb8e0c48eb3f2bcecdc58bf281668e492ba012f244da1e5090523"
+    "storageHash": "44256b71e7a8c9ab60a985d6d6e41d19b333f8b15043144ace69d27ce7c6c059"
   },
   "capabilities": {
     "postgres": {

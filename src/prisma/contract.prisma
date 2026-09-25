@@ -19,6 +19,7 @@ model User {
   
   @@check(expression: "email LIKE '%_@_%._%'", name: "users_email_format")
   @@check(expression: "(role = 'guest' AND password_hash IS NULL) OR (role <> 'guest' AND password_hash IS NOT NULL)", name: "users_guest_no_password")
+  @@index(expression: "lower(email)", where: "deleted_at IS NULL", unique: true, name: "users_email_unique_idx")
   @@map("users")
 }
 
@@ -44,6 +45,7 @@ model Product {
 
   @@check(expression: "stock_quantity >= 0", name: "products_stock_non_negative")
   @@check(expression: "price >= 0", name: "products_price_non_negative")
+  @@index([slug], where: "deleted_at IS NULL", unique: true, name: "products_slug_unique_idx")
   @@map("products")
 }
 

@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'84fa4c816cffb8e0c48eb3f2bcecdc58bf281668e492ba012f244da1e5090523'>;
+  StorageHashBase<'44256b71e7a8c9ab60a985d6d6e41d19b333f8b15043144ace69d27ce7c6c059'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -1654,7 +1654,15 @@ type ContractBase = Omit<
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
-              indexes: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'products_slug_unique_idx_5ec954d3';
+                  readonly prefix: 'products_slug_unique_idx';
+                  readonly columns: readonly ['slug'];
+                  readonly where: 'deleted_at IS NULL';
+                  readonly unique: true;
+                },
+              ];
               foreignKeys: readonly [];
             };
             readonly tokens: {
@@ -1794,7 +1802,15 @@ type ContractBase = Omit<
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
-              indexes: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'users_email_unique_idx_cd70324e';
+                  readonly prefix: 'users_email_unique_idx';
+                  readonly expression: 'lower(email)';
+                  readonly where: 'deleted_at IS NULL';
+                  readonly unique: true;
+                },
+              ];
               foreignKeys: readonly [];
             };
           };
