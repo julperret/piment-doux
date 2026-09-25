@@ -2453,7 +2453,7 @@
                   "codecId": "pg/numeric@1",
                   "default": {
                     "kind": "literal",
-                    "value": 0
+                    "value": "0"
                   },
                   "nativeType": "numeric",
                   "nullable": false,
@@ -3542,7 +3542,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "9d90495e6e127312e9e041b8fa25d10e7c1808ed53b574fa883bda1eb7582081"
+    "storageHash": "94d8cc9bbfbb583be2376caaff91e2155445a85b8122a6af1b1c5224cf0ca60f"
   },
   "capabilities": {
     "postgres": {

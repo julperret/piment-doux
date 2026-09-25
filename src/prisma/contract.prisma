@@ -125,7 +125,7 @@ model OrderLine {
   product             Product         @relation(fields: [productId], references: [id])
   productLabel        VarChar(100)    @map("product_label")
   quantity            Int
-  discountPercent     Numeric(5, 2)   @default(0) @map("discount_percent")
+  discountPercent     Numeric(5, 2)   @default("0") @map("discount_percent")
   unitPrice           Numeric(10, 2)  @map("unit_price")
 
   // order_lines_product_idx is not declared: Prisma auto-creates an index on FK column product_id
