@@ -91,6 +91,7 @@ model Order {
   invoice             Invoice?
 
   @@check(expression: "NOT (status IN ('processing', 'shipped', 'delivered') AND paid_at IS NULL)", name: "orders_paid_at_required")
+  @@index([userId, createdAt], name: "orders_user_created_idx")
   @@map("orders")
 }
 

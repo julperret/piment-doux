@@ -2804,6 +2804,15 @@
               "indexes": [
                 {
                   "columns": [
+                    "user_id",
+                    "created_at"
+                  ],
+                  "name": "orders_user_created_idx_b562028f",
+                  "prefix": "orders_user_created_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
                     "user_id"
                   ],
                   "name": "orders_user_id_idx_6c952402",
@@ -3489,7 +3498,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "44256b71e7a8c9ab60a985d6d6e41d19b333f8b15043144ace69d27ce7c6c059"
+    "storageHash": "56a75162e036eb046b65208109266966c5def52060b957c795cee1bc9080ae5e"
   },
   "capabilities": {
     "postgres": {
