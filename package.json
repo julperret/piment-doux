@@ -15,14 +15,14 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "@prisma/cli-engine": "^0.4.0",
+    "@prisma/cli-engine": "0.6.1",
     "@types/node": "^26.1.2",
-    "prisma": "^8.0.0-rc.11",
+    "prisma": "8.0.0-rc.19",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   },
   "dependencies": {
-    "@prisma/orm-postgres": "^8.0.0-rc.11",
+    "@prisma/orm-postgres": "8.0.0-rc.13",
     "dotenv": "^17.4.2"
   }
 }
