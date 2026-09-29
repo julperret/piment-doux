@@ -17,9 +17,13 @@
 - When unsure, say so and verify rather than guessing.
 
 ## Project specifics
-- Prisma 8. CLI `prisma` and `@prisma/orm-postgres` are both pinned to 8.0.0-rc.11,
-  deliberately aligned. Never propose upgrading either: version drift has already
-  caused problems.
+- Prisma 8. Exact pins, no caret: CLI `prisma` 8.0.0-rc.19,
+  `@prisma/orm-postgres` 8.0.0-rc.13, `@prisma/cli-engine` 0.6.1 (peer
+  dependency required by `@prisma/orm-toolchain` rc.13).
+  Alignment means one single `@prisma/orm-toolchain` version in the tree,
+  not matching version numbers: the CLI and the ORM are versioned separately.
+  Check with `npm ls @prisma/orm-toolchain @prisma/cli-engine --all`.
+  Never propose upgrading: version drift has already caused problems.
 - Source of truth for the schema is the hand-written DDL at docs/pd-ddl/pd.sql.
   contract.prisma must stay aligned with it.
 - I author PSL (contract.prisma), not the TypeScript contract builder. Ignore any
