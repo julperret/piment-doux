@@ -24,7 +24,7 @@
   not matching version numbers: the CLI and the ORM are versioned separately.
   Check with `npm ls @prisma/orm-toolchain @prisma/cli-engine --all`.
   Never propose upgrading: version drift has already caused problems.
-- Source of truth for the schema is the hand-written DDL at docs/pd-ddl/pd.sql.
+- Source of truth for the schema is the hand-written DDL at docs/pd.sql.
   contract.prisma must stay aligned with it.
 - I author PSL (contract.prisma), not the TypeScript contract builder. Ignore any
   skill or doc that assumes defineContract({...}) or prisma-next.
@@ -46,7 +46,7 @@ Allowed scopes:
 - `blog`      - posts, media
 - `inquiries` - catering contact form
 - `schema`    - PSL contract (contract.prisma)
-- `db`        - hand-written DDL (docs/pd-ddl/pd.sql)
+- `db`        - hand-written DDL (docs/pd.sql)
 - `prisma`    - migrations, client config
 - `api`       - OpenAPI spec
 - `config`    - tsconfig, package.json, env, tooling
