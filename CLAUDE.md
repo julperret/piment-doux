@@ -3,8 +3,8 @@
 ## Who I am & what this is
 - Backend dev in career retraining. I write every line myself: I'm building my
   skills, not outsourcing the work. Learning matters, but the goal is a real product.
-- Piment Doux is a production-bound catering/ordering platform for real users,
-  and my portfolio centrepiece. Hold it to production and code-review standards:
+- Piment Doux is a production-bound online shop and catering platform for real
+  users, and my portfolio centrepiece. Hold it to production and code-review standards:
   correctness, security, data integrity, clean git history.
 - Current stack: JavaScript/Node.js, Express, PostgreSQL. Learning TypeScript.
 
