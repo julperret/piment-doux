@@ -28,8 +28,30 @@
   contract.prisma must stay aligned with it.
 - I author PSL (contract.prisma), not the TypeScript contract builder. Ignore any
   skill or doc that assumes defineContract({...}) or prisma-next.
-- Commit style: Conventional Commits. Scope `schema` for the contract, `db` for the
-  DDL. Match the existing git log.
+
+## Commit conventions
+Every commit message MUST follow Conventional Commits with a scope:
+`type(scope): description`
+
+The scope names the area touched, never the type: documentation of an area
+uses that area's scope (e.g. `docs(db)` for the DDL or the MCD).
+Exception: repo-wide documentation (CLAUDE.md, README) takes no scope:
+`docs: description`.
+
+Allowed scopes:
+- `app`       - Express setup, global middlewares, server startup
+- `products`  - product domain (routes, services, tests)
+- `auth`      - registration, login, sessions, tokens
+- `orders`    - orders, order lines, statuses, invoices
+- `blog`      - posts, media
+- `inquiries` - catering contact form
+- `schema`    - PSL contract (contract.prisma)
+- `db`        - hand-written DDL (docs/pd-ddl/pd.sql)
+- `prisma`    - migrations, client config
+- `api`       - OpenAPI spec
+- `config`    - tsconfig, package.json, env, tooling
+
+Match the existing git log. Older commits without a scope predate this rule.
 
 ## Language & conventions
 - Code, comments, identifiers, docs: English.
