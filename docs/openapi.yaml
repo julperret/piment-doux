@@ -11,4 +11,138 @@ servers:
 paths: {}
 
 components:
-  schemas: {}
+  schemas:
+    Problem:
+      type: object
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri-reference
+          default: about:blank
+          description: URI reference identifying the problem type. Clients switch on this value.
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+          examples: [Not Found]
+        status:
+          type: integer
+          description: The HTTP status code for the error.
+          minimum: 100
+          maximum: 599
+          examples: [404]
+        detail:
+          type: string
+          description: A human-readable explanation of the error.
+          examples: [The requested product was not found.]
+        errors:
+          type: array
+          description: A list of specific errors related to the request.
+          items:
+            type: object
+            properties:
+              pointer:
+                type: string
+                description: JSON Pointer (RFC 6901) to the invalid member of the request body.
+                examples: ['#/label']
+              detail:
+                type: string
+                description: A human-readable message describing the error.
+                examples: [must be between 1 and 100 characters long.]
+            required: [pointer, detail]
+        instance:
+          type: string
+          format: uri-reference
+          description: A URI reference that identifies the specific occurrence of the problem.
+
+  responses:
+    BadRequest:
+      description: The request was invalid or cannot be served.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          examples:
+            validationFailed:
+              summary: Invalid product payload
+              value:
+                type: https://piment-doux.example/problems/validation-failed
+                title: Validation Failed
+                status: 400
+                detail: The request body contains invalid fields.
+                errors:
+                  - pointer: '#/priceCents'
+                    detail: must be a non-negative integer.
+    Unauthorized:
+      description: The request requires user authentication.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          examples:
+            missingToken:
+              summary: Missing authentication token
+              value:
+                type: about:blank
+                title: Unauthorized
+                status: 401
+                detail: Authentication is required to access this resource.
+    Forbidden:
+      description: The server understood the request, but refuses to authorize it.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          examples:
+            insufficientPermissions:
+              summary: Insufficient permissions
+              value:
+                type: about:blank
+                title: Forbidden
+                status: 403
+                detail: You do not have permission to access this resource.
+    NotFound:
+      description: The requested resource could not be found.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          examples:
+            productNotFound:
+              summary: Product not found
+              value:
+                type: https://piment-doux.example/problems/not-found
+                title: Not Found
+                status: 404
+                detail: The requested product was not found.
+    Conflict:
+      description: The request could not be completed due to a conflict with the current state of the resource.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          examples:
+            slugConflict:
+              summary: Slug already in use
+              value:
+                type: https://piment-doux.example/problems/slug-conflict
+                title: Slug already in use
+                status: 409
+                detail: Another active product already uses the slug 'piment-doux-granola-bio'.
+    InternalError:
+      description: The server encountered an unexpected condition that prevented it from fulfilling the request.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          examples:
+            unexpectedError:
+              summary: Unexpected server error
+              value:
+                type: about:blank
+                title: Internal Server Error
+                status: 500
+                detail: An unexpected error occurred on the server.
