@@ -505,15 +505,11 @@
                   "kind": "scalar"
                 }
               },
-              "totalAmount": {
+              "totalAmountCents": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/numeric@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 10,
-                    "scale": 2
-                  }
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
                 }
               }
             },
@@ -570,8 +566,8 @@
                 "sequenceNumber": {
                   "column": "sequence_number"
                 },
-                "totalAmount": {
-                  "column": "total_amount"
+                "totalAmountCents": {
+                  "column": "total_amount_cents"
                 }
               },
               "namespaceId": "public",
@@ -1021,12 +1017,8 @@
               "discountPercent": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/numeric@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 5,
-                    "scale": 2
-                  }
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
                 }
               },
               "orderId": {
@@ -1060,15 +1052,11 @@
                   "kind": "scalar"
                 }
               },
-              "unitPrice": {
+              "unitPriceCents": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/numeric@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 10,
-                    "scale": 2
-                  }
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
                 }
               }
             },
@@ -1123,8 +1111,8 @@
                 "quantity": {
                   "column": "quantity"
                 },
-                "unitPrice": {
-                  "column": "unit_price"
+                "unitPriceCents": {
+                  "column": "unit_price_cents"
                 }
               },
               "namespaceId": "public",
@@ -1493,15 +1481,11 @@
                   }
                 }
               },
-              "price": {
+              "priceCents": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/numeric@1",
-                  "kind": "scalar",
-                  "typeParams": {
-                    "precision": 10,
-                    "scale": 2
-                  }
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
                 }
               },
               "slug": {
@@ -1591,8 +1575,8 @@
                 "label": {
                   "column": "label"
                 },
-                "price": {
-                  "column": "price"
+                "priceCents": {
+                  "column": "price_cents"
                 },
                 "slug": {
                   "column": "slug"
@@ -2241,9 +2225,9 @@
                   "prefix": "invoices_sequence_number_positive"
                 },
                 {
-                  "expression": "total_amount >= 0",
-                  "name": "invoices_total_amount_non_negative_b70a6922",
-                  "prefix": "invoices_total_amount_non_negative"
+                  "expression": "total_amount_cents >= 0",
+                  "name": "invoices_total_amount_cents_non_negative_0b539c40",
+                  "prefix": "invoices_total_amount_cents_non_negative"
                 }
               ],
               "columns": {
@@ -2328,14 +2312,10 @@
                   "nativeType": "int4",
                   "nullable": false
                 },
-                "total_amount": {
-                  "codecId": "pg/numeric@1",
-                  "nativeType": "numeric",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 10,
-                    "scale": 2
-                  }
+                "total_amount_cents": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
                 }
               },
               "foreignKeys": [
@@ -2443,24 +2423,20 @@
                   "prefix": "order_lines_quantity_positive"
                 },
                 {
-                  "expression": "unit_price >= 0",
-                  "name": "order_lines_unit_price_non_negative_3c1fb11f",
-                  "prefix": "order_lines_unit_price_non_negative"
+                  "expression": "unit_price_cents >= 0",
+                  "name": "order_lines_unit_price_cents_non_negative_3f57b02c",
+                  "prefix": "order_lines_unit_price_cents_non_negative"
                 }
               ],
               "columns": {
                 "discount_percent": {
-                  "codecId": "pg/numeric@1",
+                  "codecId": "pg/int4@1",
                   "default": {
                     "kind": "literal",
-                    "value": "0"
+                    "value": 0
                   },
-                  "nativeType": "numeric",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 5,
-                    "scale": 2
-                  }
+                  "nativeType": "int4",
+                  "nullable": false
                 },
                 "order_id": {
                   "codecId": "pg/int4@1",
@@ -2485,14 +2461,10 @@
                   "nativeType": "int4",
                   "nullable": false
                 },
-                "unit_price": {
-                  "codecId": "pg/numeric@1",
-                  "nativeType": "numeric",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 10,
-                    "scale": 2
-                  }
+                "unit_price_cents": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
                 }
               },
               "foreignKeys": [
@@ -3170,9 +3142,9 @@
             "products": {
               "checks": [
                 {
-                  "expression": "price >= 0",
-                  "name": "products_price_non_negative_faabb23d",
-                  "prefix": "products_price_non_negative"
+                  "expression": "price_cents >= 0",
+                  "name": "products_price_cents_non_negative_e66f0bc2",
+                  "prefix": "products_price_cents_non_negative"
                 },
                 {
                   "expression": "stock_quantity >= 0",
@@ -3217,14 +3189,10 @@
                     "length": 100
                   }
                 },
-                "price": {
-                  "codecId": "pg/numeric@1",
-                  "nativeType": "numeric",
-                  "nullable": false,
-                  "typeParams": {
-                    "precision": 10,
-                    "scale": 2
-                  }
+                "price_cents": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
                 },
                 "slug": {
                   "codecId": "sql/varchar@1",
@@ -3542,7 +3510,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "94d8cc9bbfbb583be2376caaff91e2155445a85b8122a6af1b1c5224cf0ca60f"
+    "storageHash": "02b65fcf1c3915bd734fc902536428c342a1ea3b940ac3957be7df0e64ce7e2a"
   },
   "capabilities": {
     "postgres": {

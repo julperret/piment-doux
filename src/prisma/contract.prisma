@@ -4,7 +4,7 @@ model User {
   id                Int               @id @default(autoincrement())
   lastName          VarChar(50)       @map("last_name")
   firstName         VarChar(50)       @map("first_name")
-  email             VarChar(300)  
+  email             VarChar(300)
   passwordHash      VarChar(255)?     @map("password_hash")
   role              Role              @default(User)
   emailVerifiedAt   Timestamptz?      @map("email_verified_at")
@@ -16,7 +16,7 @@ model User {
   tokens            Token[]
   posts             Post[]
   inquiries         Inquiry[]
-  
+ 
   @@check(expression: "email LIKE '%_@_%._%'", name: "users_email_format")
   @@check(expression: "(role = 'guest' AND password_hash IS NULL) OR (role <> 'guest' AND password_hash IS NOT NULL)", name: "users_guest_no_password")
   @@index(expression: "lower(email)", where: "deleted_at IS NULL", unique: true, name: "users_email_unique_idx")
@@ -36,7 +36,7 @@ model Product {
   label               VarChar(100)
   description         String
   stockQuantity       Int             @map("stock_quantity")
-  price               Numeric(10, 2) 
+  priceCents          Int             @map("price_cents")
   createdAt           Timestamptz     @default(now()) @map("created_at")
   updatedAt           Timestamptz?    @map("updated_at")
   deletedAt           Timestamptz?    @map("deleted_at")
@@ -44,7 +44,7 @@ model Product {
   media               Media[]
 
   @@check(expression: "stock_quantity >= 0", name: "products_stock_non_negative")
-  @@check(expression: "price >= 0", name: "products_price_non_negative")
+  @@check(expression: "price_cents >= 0", name: "products_price_cents_non_negative")
   @@index([slug], where: "deleted_at IS NULL", unique: true, name: "products_slug_unique_idx")
   @@map("products")
 }
@@ -53,7 +53,7 @@ model Address {
   id                  Int             @id @default(autoincrement())
   userId              Int             @map("user_id")
   user                User            @relation(fields: [userId], references: [id])
-  label               VarChar(50)   
+  label               VarChar(50)
   street              VarChar(100)
   city                VarChar(50)
   postalCode          VarChar(20)     @map("postal_code")
@@ -125,15 +125,15 @@ model OrderLine {
   product             Product         @relation(fields: [productId], references: [id])
   productLabel        VarChar(100)    @map("product_label")
   quantity            Int
-  discountPercent     Numeric(5, 2)   @default(0) @map("discount_percent")
-  unitPrice           Numeric(10, 2)  @map("unit_price")
+  discountPercent     Int             @default(0) @map("discount_percent")
+  unitPriceCents      Int             @map("unit_price_cents")
 
   // order_lines_product_idx is not declared: Prisma auto-creates an index on FK column product_id
 
   @@id([orderId, productId])
   @@check(expression: "quantity > 0", name: "order_lines_quantity_positive")
   @@check(expression: "discount_percent >= 0 AND discount_percent <= 100", name: "order_lines_discount_percent_range")
-  @@check(expression: "unit_price >= 0", name: "order_lines_unit_price_non_negative")
+  @@check(expression: "unit_price_cents >= 0", name: "order_lines_unit_price_cents_non_negative")
   @@map("order_lines")
 }
 
@@ -149,12 +149,12 @@ model Invoice {
   billingCity         VarChar(50)     @map("billing_city")
   billingPostalCode   VarChar(20)     @map("billing_postal_code")
   billingCountry      VarChar(50)     @map("billing_country")
-  totalAmount         Numeric(10, 2)  @map("total_amount")
+  totalAmountCents    Int             @map("total_amount_cents")
   issuedAt            Timestamptz     @default(now()) @map("issued_at")
 
   @@unique([fiscalYear, sequenceNumber])
   @@check(expression: "sequence_number > 0", name: "invoices_sequence_number_positive")
-  @@check(expression: "total_amount >= 0", name: "invoices_total_amount_non_negative")
+  @@check(expression: "total_amount_cents >= 0", name: "invoices_total_amount_cents_non_negative")
   @@map("invoices")
 }
 
