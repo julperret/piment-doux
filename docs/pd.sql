@@ -25,7 +25,7 @@ CREATE TABLE products (
     label VARCHAR(100) NOT NULL,
     description TEXT NOT NULL,
     stock_quantity INTEGER NOT NULL CHECK (stock_quantity >= 0),
-    price DECIMAL(10, 2) NOT NULL CHECK (price >= 0),
+    price_cents INTEGER NOT NULL CHECK (price_cents >= 0),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
     deleted_at TIMESTAMPTZ DEFAULT NULL
@@ -82,8 +82,8 @@ CREATE TABLE order_lines (
     product_id INTEGER NOT NULL REFERENCES products(id),
     product_label VARCHAR(100) NOT NULL,
     quantity INTEGER NOT NULL CHECK (quantity > 0),
-    discount_percent DECIMAL(5, 2) NOT NULL DEFAULT 0 CHECK (discount_percent >= 0 AND discount_percent <= 100),
-    unit_price DECIMAL(10, 2) NOT NULL CHECK (unit_price >= 0),
+    discount_percent INTEGER NOT NULL DEFAULT 0 CHECK (discount_percent >= 0 AND discount_percent <= 100),
+    unit_price_cents INTEGER NOT NULL CHECK (unit_price_cents >= 0),
     PRIMARY KEY (order_id, product_id)
 );
 
@@ -98,7 +98,7 @@ CREATE TABLE invoices (
     billing_city VARCHAR(50) NOT NULL,
     billing_postal_code VARCHAR(20) NOT NULL,
     billing_country VARCHAR(50) NOT NULL,
-    total_amount DECIMAL(10, 2) NOT NULL CHECK (total_amount >= 0),
+    total_amount_cents INTEGER NOT NULL CHECK (total_amount_cents >= 0),
     issued_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT invoices_number_unique UNIQUE (fiscal_year, sequence_number)
 );
