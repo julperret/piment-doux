@@ -59,13 +59,23 @@ components:
           description: A URI reference that identifies the specific occurrence of the problem.
 
   responses:
-    BadRequest:
-      description: The request was invalid or cannot be served.
+    ClientError400:
+      description: >
+        The request was invalid. Either the syntax is malformed (Bad Request)
+        or the payload fails validation (Validation Failed).
+        Inspect the `type` field to distinguish the two cases.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/Problem'
           examples:
+            malformedRequest:
+              summary: Malformed request body
+              value:
+                type: about:blank
+                title: Bad Request
+                status: 400
+                detail: The request could not be understood by the server.
             validationFailed:
               summary: Invalid product payload
               value:
