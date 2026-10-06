@@ -1,0 +1,812 @@
+[
+  {
+    "id": "column.public.invoices.total_amount_cents",
+    "label": "Add column \"total_amount_cents\" to \"invoices\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "total_amount_cents",
+        "table": "invoices"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"total_amount_cents\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "invoices",
+          "total_amount_cents"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"total_amount_cents\"",
+        "sql": "ALTER TABLE \"public\".\"invoices\" ADD COLUMN \"total_amount_cents\" int4"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"total_amount_cents\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "invoices",
+          "total_amount_cents"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "data_migration.backfill-invoices-total_amount_cents",
+    "label": "Data transform: backfill-invoices-total_amount_cents",
+    "operationClass": "data",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [
+      {
+        "description": "Check backfill-invoices-total_amount_cents has work to do",
+        "sql": "SELECT EXISTS (SELECT \"id\" AS \"id\" FROM \"public\".\"invoices\" WHERE \"total_amount_cents\" IS NULL LIMIT 1) AS ok",
+        "params": []
+      }
+    ],
+    "execute": [
+      {
+        "description": "Run backfill-invoices-total_amount_cents",
+        "sql": "UPDATE \"public\".\"invoices\" SET \"total_amount_cents\" = (total_amount * 100)::int4 WHERE \"total_amount_cents\" IS NULL",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "Verify backfill-invoices-total_amount_cents resolved all violations",
+        "sql": "SELECT NOT EXISTS (SELECT \"id\" AS \"id\" FROM \"public\".\"invoices\" WHERE \"total_amount_cents\" IS NULL LIMIT 1) AS ok",
+        "params": []
+      }
+    ]
+  },
+  {
+    "id": "alterNullability.setNotNull.invoices.total_amount_cents",
+    "label": "Set NOT NULL on \"invoices\".\"total_amount_cents\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "total_amount_cents",
+        "table": "invoices"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"total_amount_cents\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "invoices",
+          "total_amount_cents"
+        ]
+      },
+      {
+        "description": "ensure no NULL values in \"total_amount_cents\"",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"public\".\"invoices\" WHERE \"total_amount_cents\" IS NULL) AS \"result\"",
+        "params": []
+      }
+    ],
+    "execute": [
+      {
+        "description": "set NOT NULL on \"total_amount_cents\"",
+        "sql": "ALTER TABLE \"public\".\"invoices\" ALTER COLUMN \"total_amount_cents\" SET NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"total_amount_cents\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "invoices",
+          "total_amount_cents",
+          "NO"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.order_lines.unit_price_cents",
+    "label": "Add column \"unit_price_cents\" to \"order_lines\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "unit_price_cents",
+        "table": "order_lines"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"unit_price_cents\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "order_lines",
+          "unit_price_cents"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"unit_price_cents\"",
+        "sql": "ALTER TABLE \"public\".\"order_lines\" ADD COLUMN \"unit_price_cents\" int4"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"unit_price_cents\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "order_lines",
+          "unit_price_cents"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "data_migration.backfill-order_lines-unit_price_cents",
+    "label": "Data transform: backfill-order_lines-unit_price_cents",
+    "operationClass": "data",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [
+      {
+        "description": "Check backfill-order_lines-unit_price_cents has work to do",
+        "sql": "SELECT EXISTS (SELECT \"order_id\" AS \"order_id\", \"product_id\" AS \"product_id\" FROM \"public\".\"order_lines\" WHERE \"unit_price_cents\" IS NULL LIMIT 1) AS ok",
+        "params": []
+      }
+    ],
+    "execute": [
+      {
+        "description": "Run backfill-order_lines-unit_price_cents",
+        "sql": "UPDATE \"public\".\"order_lines\" SET \"unit_price_cents\" = (unit_price * 100)::int4 WHERE \"unit_price_cents\" IS NULL",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "Verify backfill-order_lines-unit_price_cents resolved all violations",
+        "sql": "SELECT NOT EXISTS (SELECT \"order_id\" AS \"order_id\", \"product_id\" AS \"product_id\" FROM \"public\".\"order_lines\" WHERE \"unit_price_cents\" IS NULL LIMIT 1) AS ok",
+        "params": []
+      }
+    ]
+  },
+  {
+    "id": "alterNullability.setNotNull.order_lines.unit_price_cents",
+    "label": "Set NOT NULL on \"order_lines\".\"unit_price_cents\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "unit_price_cents",
+        "table": "order_lines"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"unit_price_cents\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "order_lines",
+          "unit_price_cents"
+        ]
+      },
+      {
+        "description": "ensure no NULL values in \"unit_price_cents\"",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"public\".\"order_lines\" WHERE \"unit_price_cents\" IS NULL) AS \"result\"",
+        "params": []
+      }
+    ],
+    "execute": [
+      {
+        "description": "set NOT NULL on \"unit_price_cents\"",
+        "sql": "ALTER TABLE \"public\".\"order_lines\" ALTER COLUMN \"unit_price_cents\" SET NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"unit_price_cents\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "order_lines",
+          "unit_price_cents",
+          "NO"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.products.price_cents",
+    "label": "Add column \"price_cents\" to \"products\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "price_cents",
+        "table": "products"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"price_cents\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "products",
+          "price_cents"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"price_cents\"",
+        "sql": "ALTER TABLE \"public\".\"products\" ADD COLUMN \"price_cents\" int4"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"price_cents\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "products",
+          "price_cents"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "data_migration.backfill-products-price_cents",
+    "label": "Data transform: backfill-products-price_cents",
+    "operationClass": "data",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [
+      {
+        "description": "Check backfill-products-price_cents has work to do",
+        "sql": "SELECT EXISTS (SELECT \"id\" AS \"id\" FROM \"public\".\"products\" WHERE \"price_cents\" IS NULL LIMIT 1) AS ok",
+        "params": []
+      }
+    ],
+    "execute": [
+      {
+        "description": "Run backfill-products-price_cents",
+        "sql": "UPDATE \"public\".\"products\" SET \"price_cents\" = (price * 100)::int4 WHERE \"price_cents\" IS NULL",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "Verify backfill-products-price_cents resolved all violations",
+        "sql": "SELECT NOT EXISTS (SELECT \"id\" AS \"id\" FROM \"public\".\"products\" WHERE \"price_cents\" IS NULL LIMIT 1) AS ok",
+        "params": []
+      }
+    ]
+  },
+  {
+    "id": "alterNullability.setNotNull.products.price_cents",
+    "label": "Set NOT NULL on \"products\".\"price_cents\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "price_cents",
+        "table": "products"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"price_cents\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "products",
+          "price_cents"
+        ]
+      },
+      {
+        "description": "ensure no NULL values in \"price_cents\"",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"public\".\"products\" WHERE \"price_cents\" IS NULL) AS \"result\"",
+        "params": []
+      }
+    ],
+    "execute": [
+      {
+        "description": "set NOT NULL on \"price_cents\"",
+        "sql": "ALTER TABLE \"public\".\"products\" ALTER COLUMN \"price_cents\" SET NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"price_cents\" is NOT NULL",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "products",
+          "price_cents",
+          "NO"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "data_migration.typechange-order_lines-discount_percent",
+    "label": "Data transform: typechange-order_lines-discount_percent",
+    "operationClass": "data",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [
+      {
+        "description": "Check typechange-order_lines-discount_percent has work to do",
+        "sql": "SELECT EXISTS (SELECT \"order_id\" AS \"order_id\", \"product_id\" AS \"product_id\" FROM \"public\".\"order_lines\" WHERE \"discount_percent\" <> ROUND(\"discount_percent\") LIMIT 1) AS ok",
+        "params": []
+      }
+    ],
+    "execute": [
+      {
+        "description": "Run typechange-order_lines-discount_percent",
+        "sql": "UPDATE \"public\".\"order_lines\" SET \"discount_percent\" = ROUND(\"discount_percent\")::int4 WHERE \"discount_percent\" <> ROUND(\"discount_percent\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "Verify typechange-order_lines-discount_percent resolved all violations",
+        "sql": "SELECT NOT EXISTS (SELECT \"order_id\" AS \"order_id\", \"product_id\" AS \"product_id\" FROM \"public\".\"order_lines\" WHERE \"discount_percent\" <> ROUND(\"discount_percent\") LIMIT 1) AS ok",
+        "params": []
+      }
+    ]
+  },
+  {
+    "id": "alterType.order_lines.discount_percent",
+    "label": "Alter type of \"order_lines\".\"discount_percent\" to int4",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "discount_percent",
+        "table": "order_lines"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"discount_percent\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "order_lines",
+          "discount_percent"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "alter type of \"discount_percent\"",
+        "sql": "ALTER TABLE \"public\".\"order_lines\" ALTER COLUMN \"discount_percent\" TYPE int4 USING \"discount_percent\"::int4"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"discount_percent\" has type \"integer\"",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_attribute\" AS \"a\" INNER JOIN \"pg_class\" AS \"c\" ON \"c\".\"oid\" = \"a\".\"attrelid\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"relnamespace\" WHERE (\"n\".\"nspname\" = $1 AND \"c\".\"relname\" = $2 AND \"a\".\"attname\" = $3 AND (format_type(\"a\".\"atttypid\", \"a\".\"atttypmod\")) = $4 AND NOT (\"a\".\"attisdropped\"))) AS \"result\"",
+        "params": [
+          "public",
+          "order_lines",
+          "discount_percent",
+          "integer"
+        ]
+      }
+    ],
+    "meta": {
+      "warning": "TABLE_REWRITE"
+    }
+  },
+  {
+    "id": "dropCheckConstraint.invoices.invoices_total_amount_non_negative_b70a6922",
+    "label": "Drop check constraint \"invoices_total_amount_non_negative_b70a6922\" on \"invoices\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "invoices_total_amount_non_negative_b70a6922",
+        "table": "invoices"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"invoices_total_amount_non_negative_b70a6922\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "invoices_total_amount_non_negative_b70a6922",
+          "public",
+          "\"public\".\"invoices\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop check constraint \"invoices_total_amount_non_negative_b70a6922\"",
+        "sql": "ALTER TABLE \"public\".\"invoices\" DROP CONSTRAINT \"invoices_total_amount_non_negative_b70a6922\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"invoices_total_amount_non_negative_b70a6922\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "invoices_total_amount_non_negative_b70a6922",
+          "public",
+          "\"public\".\"invoices\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dropColumn.invoices.total_amount",
+    "label": "Drop column \"total_amount\" from \"invoices\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "total_amount",
+        "table": "invoices"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"total_amount\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "invoices",
+          "total_amount"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop column \"total_amount\"",
+        "sql": "ALTER TABLE \"public\".\"invoices\" DROP COLUMN \"total_amount\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"total_amount\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "invoices",
+          "total_amount"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dropCheckConstraint.order_lines.order_lines_unit_price_non_negative_3c1fb11f",
+    "label": "Drop check constraint \"order_lines_unit_price_non_negative_3c1fb11f\" on \"order_lines\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "order_lines_unit_price_non_negative_3c1fb11f",
+        "table": "order_lines"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"order_lines_unit_price_non_negative_3c1fb11f\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "order_lines_unit_price_non_negative_3c1fb11f",
+          "public",
+          "\"public\".\"order_lines\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop check constraint \"order_lines_unit_price_non_negative_3c1fb11f\"",
+        "sql": "ALTER TABLE \"public\".\"order_lines\" DROP CONSTRAINT \"order_lines_unit_price_non_negative_3c1fb11f\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"order_lines_unit_price_non_negative_3c1fb11f\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "order_lines_unit_price_non_negative_3c1fb11f",
+          "public",
+          "\"public\".\"order_lines\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dropColumn.order_lines.unit_price",
+    "label": "Drop column \"unit_price\" from \"order_lines\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "unit_price",
+        "table": "order_lines"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"unit_price\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "order_lines",
+          "unit_price"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop column \"unit_price\"",
+        "sql": "ALTER TABLE \"public\".\"order_lines\" DROP COLUMN \"unit_price\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"unit_price\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "order_lines",
+          "unit_price"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dropCheckConstraint.products.products_price_non_negative_faabb23d",
+    "label": "Drop check constraint \"products_price_non_negative_faabb23d\" on \"products\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "products_price_non_negative_faabb23d",
+        "table": "products"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"products_price_non_negative_faabb23d\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "products_price_non_negative_faabb23d",
+          "public",
+          "\"public\".\"products\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop check constraint \"products_price_non_negative_faabb23d\"",
+        "sql": "ALTER TABLE \"public\".\"products\" DROP CONSTRAINT \"products_price_non_negative_faabb23d\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"products_price_non_negative_faabb23d\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "products_price_non_negative_faabb23d",
+          "public",
+          "\"public\".\"products\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dropColumn.products.price",
+    "label": "Drop column \"price\" from \"products\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "price",
+        "table": "products"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"price\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "products",
+          "price"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop column \"price\"",
+        "sql": "ALTER TABLE \"public\".\"products\" DROP COLUMN \"price\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"price\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "products",
+          "price"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.invoices.invoices_total_amount_cents_non_negative_0b539c40",
+    "label": "Add check constraint \"invoices_total_amount_cents_non_negative_0b539c40\" on \"invoices\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "invoices_total_amount_cents_non_negative_0b539c40",
+        "table": "invoices"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"invoices_total_amount_cents_non_negative_0b539c40\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "invoices_total_amount_cents_non_negative_0b539c40",
+          "public",
+          "\"public\".\"invoices\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add check constraint \"invoices_total_amount_cents_non_negative_0b539c40\"",
+        "sql": "ALTER TABLE \"public\".\"invoices\" ADD CONSTRAINT \"invoices_total_amount_cents_non_negative_0b539c40\" CHECK (total_amount_cents >= 0)"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"invoices_total_amount_cents_non_negative_0b539c40\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "invoices_total_amount_cents_non_negative_0b539c40",
+          "public",
+          "\"public\".\"invoices\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.order_lines.order_lines_unit_price_cents_non_negative_3f57b02c",
+    "label": "Add check constraint \"order_lines_unit_price_cents_non_negative_3f57b02c\" on \"order_lines\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "order_lines_unit_price_cents_non_negative_3f57b02c",
+        "table": "order_lines"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"order_lines_unit_price_cents_non_negative_3f57b02c\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "order_lines_unit_price_cents_non_negative_3f57b02c",
+          "public",
+          "\"public\".\"order_lines\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add check constraint \"order_lines_unit_price_cents_non_negative_3f57b02c\"",
+        "sql": "ALTER TABLE \"public\".\"order_lines\" ADD CONSTRAINT \"order_lines_unit_price_cents_non_negative_3f57b02c\" CHECK (unit_price_cents >= 0)"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"order_lines_unit_price_cents_non_negative_3f57b02c\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "order_lines_unit_price_cents_non_negative_3f57b02c",
+          "public",
+          "\"public\".\"order_lines\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.products.products_price_cents_non_negative_e66f0bc2",
+    "label": "Add check constraint \"products_price_cents_non_negative_e66f0bc2\" on \"products\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "products_price_cents_non_negative_e66f0bc2",
+        "table": "products"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"products_price_cents_non_negative_e66f0bc2\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "products_price_cents_non_negative_e66f0bc2",
+          "public",
+          "\"public\".\"products\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add check constraint \"products_price_cents_non_negative_e66f0bc2\"",
+        "sql": "ALTER TABLE \"public\".\"products\" ADD CONSTRAINT \"products_price_cents_non_negative_e66f0bc2\" CHECK (price_cents >= 0)"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"products_price_cents_non_negative_e66f0bc2\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "products_price_cents_non_negative_e66f0bc2",
+          "public",
+          "\"public\".\"products\""
+        ]
+      }
+    ]
+  }
+]
