@@ -1,27 +1,34 @@
 import { describe, it, vi, expect } from "vitest";
 import { errorHandler } from "../middlewares/errorHandler.js";
-import { AppError, NotFoundError } from "../lib/errors.js";
+import { NotFoundError } from "../lib/errors.js";
 import type { Request, Response } from "express";
+
+function createMockResponse(headersSent: boolean): Response {
+    const mock: Partial<Response> = {
+        headersSent,
+        status: vi.fn(() => res),
+        type: vi.fn(() => res),
+        json: vi.fn(() => res),
+    };
+    // Deliberate cast: the mock only implements what errorHandler uses
+    const res = mock as Response;
+    return res;
+}
 
 describe("errorHandler", () => {
     it("maps NotFoundError to a 404 problem+json response", () => {
-        // Mock the Express response object. Each method returns the response object itself to allow for method chaining.
-        const mock: Partial<Response> = {
-            headersSent: false,
-            status: vi.fn(() => res),
-            type: vi.fn(() => res),
-            json: vi.fn(() => res),
-        };
+        // Arrange
         const err = new NotFoundError();
-        // Deliberate cast: the mock only implements what errorHandler uses
-        const res = mock as Response;
+        const res = createMockResponse(false);
         const req = {} as Request;
         const next = vi.fn();
 
-        // Call the errorHandler with the NotFoundError
+
+        // Act
         errorHandler(err, req, res, next);
 
-        // Assert that the response methods were called with the expected values
+
+        // Assert
         expect(res.status).toHaveBeenCalledWith(404);
         expect(res.type).toHaveBeenCalledWith("application/problem+json");
         expect(res.json).toHaveBeenCalledWith({
@@ -31,5 +38,22 @@ describe("errorHandler", () => {
             type: "https://piment-doux.example/problems/not-found",
         });
         expect(next).not.toHaveBeenCalled();
+    });
+
+    it("delegates to next when headers are already sent", () => {
+        // Arrange
+        const err = new NotFoundError();
+        const res = createMockResponse(true);
+        const req = {} as Request;
+        const next = vi.fn();
+
+        // Act
+        errorHandler(err, req, res, next);
+
+        // Assert: once headers are sent, only Express's default handler can close the connection
+        expect(res.status).not.toHaveBeenCalled();
+        expect(res.type).not.toHaveBeenCalled();
+        expect(res.json).not.toHaveBeenCalled();
+        expect(next).toHaveBeenCalledExactlyOnceWith(err);
     });
 });
