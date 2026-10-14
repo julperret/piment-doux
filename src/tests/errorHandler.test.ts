@@ -137,4 +137,27 @@ describe("errorHandler", () => {
         });
         expect(next).not.toHaveBeenCalled();
     });
+
+    it("ignores the message of a non-Error object with a 4xx status", () => {
+        // Arrange
+        // Only real Errors expose their message: a plain object's message must not leak
+        const err = { status: 400, message: "db password is nietzsche" };
+        const res = createMockResponse(false);
+        const req = {} as Request;
+        const next = vi.fn();
+
+        // Act
+        errorHandler(err, req, res, next);
+
+        // Assert
+        expect(res.status).toHaveBeenCalledExactlyOnceWith(400);
+        expect(res.type).toHaveBeenCalledExactlyOnceWith("application/problem+json");
+        expect(res.json).toHaveBeenCalledExactlyOnceWith({
+            title: "Bad Request",
+            status: 400,
+            detail: "The request could not be understood by the server.",
+            type: "about:blank",
+        });
+        expect(next).not.toHaveBeenCalled();
+    });
 });
