@@ -33,7 +33,7 @@ function errorHandler(err: unknown, _req: Request, res: Response, next: NextFunc
             .type("application/problem+json")
             .json({
                 type: "about:blank",
-                title: STATUS_CODES[status] ?? "Bad Request",
+                title: STATUS_CODES[status] ?? "Client Error",
                 status,
                 detail: err instanceof Error ? err.message : "The request could not be understood by the server.",
             });

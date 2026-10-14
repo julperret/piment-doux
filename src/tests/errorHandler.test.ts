@@ -160,4 +160,26 @@ describe("errorHandler", () => {
         });
         expect(next).not.toHaveBeenCalled();
     });
+
+    it("falls back to the Client Error title for a 4xx status unknown to STATUS_CODES", () => {
+        // Arrange
+        const err = Object.assign(new Error("Client closed request"), { status: 499 });
+        const res = createMockResponse(false);
+        const req = {} as Request;
+        const next = vi.fn();
+
+        // Act
+        errorHandler(err, req, res, next);
+
+        // Assert
+        expect(res.status).toHaveBeenCalledExactlyOnceWith(499);
+        expect(res.type).toHaveBeenCalledExactlyOnceWith("application/problem+json");
+        expect(res.json).toHaveBeenCalledExactlyOnceWith({
+            title: "Client Error",
+            status: 499,
+            detail: "Client closed request",
+            type: "about:blank",
+        });
+        expect(next).not.toHaveBeenCalled();
+    });
 });
