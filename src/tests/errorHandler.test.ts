@@ -1,4 +1,4 @@
-import { describe, it, vi, expect } from "vitest";
+import { describe, it, vi, expect, afterEach } from "vitest";
 import { errorHandler } from "../middlewares/errorHandler.js";
 import { NotFoundError, ValidationFailedError, type FieldError } from "../lib/errors.js";
 import type { Request, Response } from "express";
@@ -14,6 +14,11 @@ function createMockResponse(headersSent: boolean): Response {
     const res = mock as Response;
     return res;
 }
+
+// Restore spied console's error method even when a test fails
+afterEach(() => {
+    vi.restoreAllMocks();
+});
 
 describe("errorHandler", () => {
     it("maps NotFoundError to a 404 problem+json response", () => {
@@ -81,6 +86,32 @@ describe("errorHandler", () => {
                 { pointer: "#/firstName", detail: "must not be empty." },
                 { pointer: "#/email", detail: "must be a valid email address." },
             ],
+        });
+        expect(next).not.toHaveBeenCalled();
+    });
+
+    it("maps unknown errors to a 500 problem+json response", () => {
+        // Arrange
+        // Spy on console.error to suppress output during the test and verify it was called
+        const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+        const err = new Error("Unexpected error");
+        const res = createMockResponse(false);
+        const req = {} as Request;
+        const next = vi.fn();
+
+        // Act
+        errorHandler(err, req, res, next);
+
+        // Assert
+        expect(consoleErrorSpy).toHaveBeenCalledExactlyOnceWith(err);
+        expect(res.status).toHaveBeenCalledExactlyOnceWith(500);
+        expect(res.type).toHaveBeenCalledExactlyOnceWith("application/problem+json");
+        expect(res.json).toHaveBeenCalledExactlyOnceWith({
+            title: "Internal Server Error",
+            status: 500,
+            detail: "The server encountered an unexpected condition that prevented it from fulfilling the request.",
+            type: "about:blank",
         });
         expect(next).not.toHaveBeenCalled();
     });
