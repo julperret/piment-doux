@@ -32,9 +32,9 @@ describe("errorHandler", () => {
         errorHandler(err, req, res, next);
 
         // Assert
-        expect(res.status).toHaveBeenCalledWith(404);
-        expect(res.type).toHaveBeenCalledWith("application/problem+json");
-        expect(res.json).toHaveBeenCalledWith({
+        expect(res.status).toHaveBeenCalledExactlyOnceWith(404);
+        expect(res.type).toHaveBeenCalledExactlyOnceWith("application/problem+json");
+        expect(res.json).toHaveBeenCalledExactlyOnceWith({
             title: "Not Found",
             status: 404,
             detail: "The requested resource could not be found.",
@@ -75,9 +75,9 @@ describe("errorHandler", () => {
         errorHandler(err, req, res, next);
 
         // Assert
-        expect(res.status).toHaveBeenCalledWith(400);
-        expect(res.type).toHaveBeenCalledWith("application/problem+json");
-        expect(res.json).toHaveBeenCalledWith({
+        expect(res.status).toHaveBeenCalledExactlyOnceWith(400);
+        expect(res.type).toHaveBeenCalledExactlyOnceWith("application/problem+json");
+        expect(res.json).toHaveBeenCalledExactlyOnceWith({
             title: "Validation Failed",
             status: 400,
             detail: "The request body contains invalid fields.",
