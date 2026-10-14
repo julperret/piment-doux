@@ -1,6 +1,6 @@
 import { describe, it, vi, expect } from "vitest";
 import { errorHandler } from "../middlewares/errorHandler.js";
-import { NotFoundError } from "../lib/errors.js";
+import { NotFoundError, ValidationFailedError, type FieldError } from "../lib/errors.js";
 import type { Request, Response } from "express";
 
 function createMockResponse(headersSent: boolean): Response {
@@ -23,10 +23,8 @@ describe("errorHandler", () => {
         const req = {} as Request;
         const next = vi.fn();
 
-
         // Act
         errorHandler(err, req, res, next);
-
 
         // Assert
         expect(res.status).toHaveBeenCalledWith(404);
@@ -55,5 +53,35 @@ describe("errorHandler", () => {
         expect(res.type).not.toHaveBeenCalled();
         expect(res.json).not.toHaveBeenCalled();
         expect(next).toHaveBeenCalledExactlyOnceWith(err);
+    });
+
+    it("maps ValidationFailedError to a 400 problem+json response with errors", () => {
+        // Arrange
+        const validationErrors: FieldError[] = [
+            { pointer: "#/firstName", detail: "must not be empty." },
+            { pointer: "#/email", detail: "must be a valid email address." },
+        ];
+        const err = new ValidationFailedError(validationErrors);
+        const res = createMockResponse(false);
+        const req = {} as Request;
+        const next = vi.fn();
+
+        // Act
+        errorHandler(err, req, res, next);
+
+        // Assert
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.type).toHaveBeenCalledWith("application/problem+json");
+        expect(res.json).toHaveBeenCalledWith({
+            title: "Validation Failed",
+            status: 400,
+            detail: "The request body contains invalid fields.",
+            type: "https://piment-doux.example/problems/validation-failed",
+            errors: [
+                { pointer: "#/firstName", detail: "must not be empty." },
+                { pointer: "#/email", detail: "must be a valid email address." },
+            ],
+        });
+        expect(next).not.toHaveBeenCalled();
     });
 });
