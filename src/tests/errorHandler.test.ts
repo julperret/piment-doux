@@ -182,4 +182,30 @@ describe("errorHandler", () => {
         });
         expect(next).not.toHaveBeenCalled();
     });
+
+    it("does not leak the message of an Error with status 500", () => {
+        // Arrange
+        // Spy on console.error to suppress output during the test and verify it was called
+        const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+        const err = Object.assign(new Error('password authentication failed for user "descartes"'), { status: 500 });
+        const res = createMockResponse(false);
+        const req = {} as Request;
+        const next = vi.fn();
+
+        // Act
+        errorHandler(err, req, res, next);
+
+        // Assert
+        expect(consoleErrorSpy).toHaveBeenCalledExactlyOnceWith(err);
+        expect(res.status).toHaveBeenCalledExactlyOnceWith(500);
+        expect(res.type).toHaveBeenCalledExactlyOnceWith("application/problem+json");
+        expect(res.json).toHaveBeenCalledExactlyOnceWith({
+            title: "Internal Server Error",
+            status: 500,
+            detail: "The server encountered an unexpected condition that prevented it from fulfilling the request.",
+            type: "about:blank",
+        });
+        expect(next).not.toHaveBeenCalled();
+    });
 });
