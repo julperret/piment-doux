@@ -115,4 +115,26 @@ describe("errorHandler", () => {
         });
         expect(next).not.toHaveBeenCalled();
     });
+
+    it("maps a 4xx Error with status to a problem+json response with its message", () => {
+        // Arrange
+        const err = Object.assign(new Error("Malformed request."), { status: 400 });
+        const res = createMockResponse(false);
+        const req = {} as Request;
+        const next = vi.fn();
+
+        // Act
+        errorHandler(err, req, res, next);
+
+        // Assert
+        expect(res.status).toHaveBeenCalledExactlyOnceWith(400);
+        expect(res.type).toHaveBeenCalledExactlyOnceWith("application/problem+json");
+        expect(res.json).toHaveBeenCalledExactlyOnceWith({
+            title: "Bad Request",
+            status: 400,
+            detail: "Malformed request.",
+            type: "about:blank",
+        });
+        expect(next).not.toHaveBeenCalled();
+    });
 });
