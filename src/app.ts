@@ -1,9 +1,13 @@
 import express from "express";
 import type { Request, Response, NextFunction } from "express";
+import helmet from "helmet";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { NotFoundError } from "./lib/errors.js";
 
 const app = express();
+
+// First, so security headers are set on every response, including body-parser errors
+app.use(helmet());
 
 // Middleware to parse JSON bodies
 app.use(express.json());
