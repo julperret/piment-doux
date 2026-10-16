@@ -74,6 +74,7 @@ customer accounts, orders and invoices, catering inquiries, and a blog.
   `AppError` hierarchy, a 404 fallback for unknown routes and a generic 500 fallback
 - Security headers with Helmet (`X-Powered-By` removed, `nosniff`, HSTS, CSP)
 - Unit tests for the error handler (Vitest)
+- Code formatting with Prettier, checked with `npm run format:check`
 
 ### In progress
 
@@ -88,7 +89,7 @@ customer accounts, orders and invoices, catering inquiries, and a blog.
 - Catering inquiries
 - Blog and media
 - Integration tests (HTTP level) and tests for each endpoint
-- Continuous integration: spec lint, type check, tests
+- Continuous integration: spec lint, format check, type check, tests
 
 ### Planned
 
@@ -115,6 +116,20 @@ Run the test suite:
 
 ```bash
 npm test
+```
+
+Format the code, or check it without changing files:
+
+```bash
+npm run format
+npm run format:check
+```
+
+Repo-wide formatting commits are listed in `.git-blame-ignore-revs`. To skip them
+in a local `git blame` (GitHub does this automatically):
+
+```bash
+git config blame.ignoreRevsFile .git-blame-ignore-revs
 ```
 
 ## Repository layout
