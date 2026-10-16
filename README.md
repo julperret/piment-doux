@@ -52,7 +52,9 @@ customer accounts, orders and invoices, catering inquiries, and a blog.
 - Prices exposed as integer cents (`priceCents`, EUR).
 - Stock: `inStock` boolean publicly, exact quantity for admins.
 - Lists: `page`, `limit`, `sort`, `order`, `search`.
-- Errors follow RFC 9457 (`application/problem+json`).
+- Errors follow RFC 9457 (`application/problem+json`). Unexpected errors are
+  logged server-side and answered with a generic 500, so their message never
+  reaches the client.
 
 ## Project status
 
@@ -66,29 +68,34 @@ customer accounts, orders and invoices, catering inquiries, and a blog.
 - Express server bootstrap in TypeScript
 - OpenAPI 3.1 base: RFC 9457 problem schema and shared error responses:
   `docs/openapi.yaml`
+- Prices stored as integer cents and discounts as integer percent
+  (`price_cents`, `unit_price_cents`, `total_amount_cents`, `discount_percent`)
+- Global error handling: RFC 9457 `application/problem+json` responses through an
+  `AppError` hierarchy, a 404 fallback for unknown routes and a generic 500 fallback
+- Security headers with Helmet (`X-Powered-By` removed, `nosniff`, HSTS, CSP)
+- Unit tests for the error handler (Vitest)
 
 ### In progress
 
 - Products API contract: public and admin schemas, paths, pagination
-- Monetary columns: move from `DECIMAL(10,2)` to integer cents
 
 ### Next
 
 - Products endpoints: public read, admin write, soft delete and restore
-- Global error handling (problem+json) and request validation
+- Request validation
 - Authentication and roles (user, guest, admin)
 - Orders, order status history and invoices
 - Catering inquiries
 - Blog and media
-- Automated tests
+- Integration tests (HTTP level) and tests for each endpoint
 - Continuous integration: spec lint, type check, tests
 
 ### Planned
 
 - Vue.js 3 frontend
 - Deployment with nginx on a VPS
-- HubSpot CRM as a downstream consumer. The local PostgreSQL database stays the
-  source of truth. The site writes locally, then pushes to HubSpot.
+- HubSpot CRM as a downstream consumer: the site writes to the local PostgreSQL
+  database (source of truth), then pushes to HubSpot
 
 ## Running locally
 
@@ -101,7 +108,14 @@ npx prisma db migrate
 npm run dev
 ```
 
-The server starts on http://localhost:3000. Only a placeholder route exists for now.
+The server starts on http://localhost:3000. Only a placeholder route exists for now;
+unknown routes return a `404` problem+json response.
+
+Run the test suite:
+
+```bash
+npm test
+```
 
 ## Repository layout
 
@@ -114,5 +128,8 @@ migrations/        Prisma migrations
 src/
   app.ts           Express app
   server.ts        Server startup
+  lib/             Shared code (error classes)
+  middlewares/     Express middlewares (error handler)
   prisma/          Prisma contract and database client
+  tests/           Unit tests (Vitest)
 ```
