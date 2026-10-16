@@ -9,7 +9,9 @@
   "scripts": {
     "test": "vitest run",
     "contract:emit": "prisma contract emit",
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "@prisma/cli-engine": "0.6.1",
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.2",
+    "prettier": "3.9.7",
     "prisma": "8.0.0-rc.19",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2",
