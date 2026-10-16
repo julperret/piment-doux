@@ -47,7 +47,7 @@ components:
               pointer:
                 type: string
                 description: JSON Pointer (RFC 6901) to the invalid member of the request body.
-                examples: ['#/label']
+                examples: ["#/label"]
               detail:
                 type: string
                 description: A human-readable message describing the error.
@@ -67,7 +67,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/Problem'
+            $ref: "#/components/schemas/Problem"
           examples:
             malformedRequest:
               summary: Malformed request body
@@ -84,14 +84,14 @@ components:
                 status: 400
                 detail: The request body contains invalid fields.
                 errors:
-                  - pointer: '#/priceCents'
+                  - pointer: "#/priceCents"
                     detail: must be a non-negative integer.
     Unauthorized:
       description: The request requires user authentication.
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/Problem'
+            $ref: "#/components/schemas/Problem"
           examples:
             missingToken:
               summary: Missing authentication token
@@ -105,7 +105,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/Problem'
+            $ref: "#/components/schemas/Problem"
           examples:
             insufficientPermissions:
               summary: Insufficient permissions
@@ -119,7 +119,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/Problem'
+            $ref: "#/components/schemas/Problem"
           examples:
             productNotFound:
               summary: Product not found
@@ -133,7 +133,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/Problem'
+            $ref: "#/components/schemas/Problem"
           examples:
             slugConflict:
               summary: Slug already in use
@@ -147,7 +147,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/Problem'
+            $ref: "#/components/schemas/Problem"
           examples:
             unexpectedError:
               summary: Unexpected server error

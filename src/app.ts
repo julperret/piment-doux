@@ -14,13 +14,13 @@ app.use(express.json());
 
 // Sample route
 app.get("/", (_req: Request, res: Response): void => {
-  res.send("Hello, World!");
+    res.send("Hello, World!");
 });
 
 // Must stay after all routes and before errorHandler: any request reaching it matched no route
 app.use((_req: Request, _res: Response, next: NextFunction): void => {
-  const err = new NotFoundError();
-  next(err);
+    const err = new NotFoundError();
+    next(err);
 });
 
 // Must be registered last: Express only forwards errors to middlewares declared after the failing one

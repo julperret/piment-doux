@@ -50,16 +50,29 @@ class NotFoundError extends AppError {
 }
 
 class ConflictError extends AppError {
-    constructor(detail = "The request could not be completed due to a conflict with the current state of the resource.") {
+    constructor(
+        detail = "The request could not be completed due to a conflict with the current state of the resource.",
+    ) {
         super("Conflict", 409, detail, "https://piment-doux.example/problems/conflict");
     }
 }
 
 class InternalServerError extends AppError {
-    constructor(detail = "The server encountered an unexpected condition that prevented it from fulfilling the request.") {
+    constructor(
+        detail = "The server encountered an unexpected condition that prevented it from fulfilling the request.",
+    ) {
         super("Internal Server Error", 500, detail);
     }
 }
 
-export { AppError, BadRequestError, ValidationFailedError, UnauthorizedError, ForbiddenError, NotFoundError, ConflictError, InternalServerError };
+export {
+    AppError,
+    BadRequestError,
+    ValidationFailedError,
+    UnauthorizedError,
+    ForbiddenError,
+    NotFoundError,
+    ConflictError,
+    InternalServerError,
+};
 export type { FieldError };
