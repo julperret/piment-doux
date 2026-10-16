@@ -37,6 +37,8 @@ The scope names the area touched, never the type: documentation of an area
 uses that area's scope (e.g. `docs(db)` for the DDL or the MCD).
 Exception: repo-wide documentation (CLAUDE.md, README) takes no scope:
 `docs: description`.
+Exception: repo-wide mechanical formatting (e.g. running Prettier on the whole
+codebase) takes no scope: `style: description`.
 
 Allowed scopes:
 - `app`       - Express setup, global middlewares, server startup
