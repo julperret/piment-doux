@@ -3,6 +3,9 @@ info:
   title: Piment Doux API
   description: "API for the Piment Doux platform: an online shop and catering inquiries."
   version: 0.1.0
+  contact:
+    name: Julien Perret
+    url: https://github.com/julperret/piment-doux
 
 servers:
   - url: http://localhost:3000
