@@ -11,7 +11,73 @@ servers:
   - url: http://localhost:3000
     description: Local development server
 
-paths: {}
+tags:
+  - name: Products
+    description: Product operations
+
+paths:
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get a product by its id.
+      description: Returns 404 for unknown or soft-deleted products.
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the product
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+      responses:
+        "200":
+          description: The requested product.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, slug, label, description, priceCents, inStock]
+                properties:
+                  id:
+                    type: integer
+                    format: int32
+                    minimum: 1
+                    description: The unique identifier of the product.
+                  slug:
+                    type: string
+                    description: The URL-friendly identifier of the product.
+                  label:
+                    type: string
+                    description: The name of the product.
+                  description:
+                    type: string
+                    description: A detailed description of the product.
+                  priceCents:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    description: The price of the product in cents.
+                  inStock:
+                    type: boolean
+                    description: Whether the product is currently in stock.
+              examples:
+                granola1kg:
+                  value:
+                    id: 5
+                    slug: "granola-noisettes-sirop-erable-1kg"
+                    label: "Granola aux noisettes & sirop d'érable - 1kg"
+                    description: "Granola aux noisettes, avoine, sirop d'érable et beurre de coco."
+                    priceCents: 2400
+                    inStock: true
+        "400":
+          $ref: "#/components/responses/ClientError400"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
 
 components:
   schemas:
