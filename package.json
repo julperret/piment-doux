@@ -11,7 +11,8 @@
         "contract:emit": "prisma contract emit",
         "dev": "tsx watch src/server.ts",
         "format": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "db:migrate:test": "set -a && . ./.env.test && set +a && prisma migration check && prisma db migrate --db \"$DATABASE_URL\""
     },
     "keywords": [],
     "author": "",
