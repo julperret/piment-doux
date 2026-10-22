@@ -1,3 +1,5 @@
+// Node < 26.8.2 has no global Temporal; Prisma decodes timestamp columns into Temporal values
+import "temporal-polyfill/full/global";
 import "dotenv/config";
 import postgres from "@prisma/orm-postgres/runtime";
 import type { Contract } from "./contract.d";
