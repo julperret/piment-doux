@@ -57,14 +57,6 @@ class ConflictError extends AppError {
     }
 }
 
-class InternalServerError extends AppError {
-    constructor(
-        detail = "The server encountered an unexpected condition that prevented it from fulfilling the request.",
-    ) {
-        super("Internal Server Error", 500, detail);
-    }
-}
-
 export {
     AppError,
     BadRequestError,
@@ -73,6 +65,5 @@ export {
     ForbiddenError,
     NotFoundError,
     ConflictError,
-    InternalServerError,
 };
 export type { FieldError };
