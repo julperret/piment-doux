@@ -100,23 +100,89 @@ customer accounts, orders and invoices, catering inquiries, and a blog.
 
 ## Running locally
 
-Requirements: Node.js (current LTS) and an empty PostgreSQL 15+ database.
+### Requirements
+
+- Node.js 22 or later
+- PostgreSQL 15 or later
+- A POSIX shell (bash, zsh): `npm run db:migrate:test` loads `.env.test` with `.`
+
+The project uses two databases: one for development and one for the test suite.
+
+### 1. Install dependencies
 
 ```bash
 npm ci
-cp .env.example .env   # then set DATABASE_URL to an empty PostgreSQL database
+```
+
+### 2. Create the databases
+
+Example with one role owning both databases (pick your own names and password):
+
+```bash
+sudo -u postgres psql \
+  -c "CREATE ROLE pd LOGIN PASSWORD 'change-me';" \
+  -c "CREATE DATABASE pd_dev OWNER pd;" \
+  -c "CREATE DATABASE pd_test OWNER pd;"
+```
+
+The test database name must end with `_test`. The test setup refuses to run
+against any other database, so the suite cannot touch development data.
+
+### 3. Configure the environment
+
+```bash
+cp .env.example .env
+cp .env.example .env.test
+```
+
+Set `DATABASE_URL` in each file:
+
+| File        | Used by                               | Example                                            |
+| ----------- | ------------------------------------- | -------------------------------------------------- |
+| `.env`      | `npm run dev`, `npx prisma ...`       | `postgresql://pd:change-me@localhost:5432/pd_dev`  |
+| `.env.test` | `npm test`, `npm run db:migrate:test` | `postgresql://pd:change-me@localhost:5432/pd_test` |
+
+Both files are git-ignored. `npm test` fails if `.env.test` is missing, even
+for tests that do not use the database.
+
+### 4. Apply the migrations
+
+Development database:
+
+```bash
+npx prisma migration check     # migrations match the contract
+npx prisma db migrate --show   # read-only preview of what will run
 npx prisma db migrate
+```
+
+Test database:
+
+```bash
+npm run db:migrate:test
+```
+
+Run both again after pulling new migrations.
+
+### 5. Start the server
+
+```bash
 npm run dev
 ```
 
-The server starts on http://localhost:3000. Only a placeholder route exists for now;
-unknown routes return a `404` problem+json response.
+The server starts on http://localhost:3000 (override with `PORT`). Only a
+placeholder route exists for now; unknown routes return a `404` problem+json
+response.
 
-Run the test suite:
+### Tests
 
 ```bash
 npm test
 ```
+
+Vitest loads `.env.test`. Test files run one after another, not in parallel,
+because they share the test database.
+
+### Formatting
 
 Format the code, or check it without changing files:
 
