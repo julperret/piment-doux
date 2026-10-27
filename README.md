@@ -74,6 +74,8 @@ customer accounts, orders and invoices, catering inquiries, and a blog.
   `AppError` hierarchy, a 404 fallback for unknown routes and a generic 500 fallback
 - Security headers with Helmet (`X-Powered-By` removed, `nosniff`, HSTS, CSP)
 - Unit tests for the error handler (Vitest)
+- Integration test setup: Supertest and a dedicated test database, with a guard
+  that refuses to run against a database whose name does not end with `_test`
 - Code formatting with Prettier, checked with `npm run format:check`
 
 ### In progress
@@ -88,7 +90,7 @@ customer accounts, orders and invoices, catering inquiries, and a blog.
 - Orders, order status history and invoices
 - Catering inquiries
 - Blog and media
-- Integration tests (HTTP level) and tests for each endpoint
+- Integration tests for each endpoint
 - Continuous integration: spec lint, format check, type check, tests
 
 ### Planned
@@ -212,5 +214,5 @@ src/
   lib/             Shared code (error classes)
   middlewares/     Express middlewares (error handler)
   prisma/          Prisma contract and database client
-  tests/           Unit tests (Vitest)
+  tests/           Unit and integration tests (Vitest, Supertest)
 ```
