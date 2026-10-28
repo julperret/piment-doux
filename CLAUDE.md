@@ -60,6 +60,30 @@ Allowed scopes:
 
 Match the existing git log. Older commits without a scope predate this rule.
 
+## Branch naming
+
+Branch names mirror the commit convention: `type/scope/short-description`,
+lowercase, English, words separated by hyphens.
+
+The type and scope are those the branch's commits will carry, using the same
+words as in commits (`feat/`, not `feature/`). A branch spanning several areas
+takes the dominant scope.
+Exception: a branch for scopeless commits (repo-wide documentation or
+formatting) has no scope: `type/short-description`.
+A branch name always ends with a description: Git stores branch names as
+paths, so a bare `type/scope` branch would block every `type/scope/...` one.
+A branch name reflects the intent of its work: it is renamed when that intent
+changes, and an unrelated change gets its own branch.
+
+Examples:
+
+- `feat/orders/invoice-pdf`
+- `fix/prisma/temporal-polyfill`
+- `test/products/get-by-id`
+- `docs/api/products-endpoint`
+- `docs/readme-project-status` (scopeless)
+- `style/prettier-whole-repo` (scopeless)
+
 ## Language & conventions
 
 - Code, comments, identifiers, docs: English.
