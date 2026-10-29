@@ -3,6 +3,7 @@ import type { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { NotFoundError } from "./lib/errors.js";
+import { productsRouter } from "./route/products-router.js";
 
 const app = express();
 
@@ -11,6 +12,9 @@ app.use(helmet());
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+// Import products router
+app.use("/products", productsRouter);
 
 // Sample route
 app.get("/", (_req: Request, res: Response): void => {
