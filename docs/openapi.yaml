@@ -54,6 +54,92 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalError"
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Get a sorted list of products.
+      description: >
+        The list is ordered by most recent id: newest first. Results are paginated with limit and offset. An offset past the end returns an empty products array. Soft-deleted products are excluded from the list. The products that are out of stock are included with inStock: false.
+      operationId: listProducts
+      parameters:
+        - in: query
+          name: limit
+          description: The number of items to return.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 20
+            default: 12
+        - in: query
+          name: offset
+          description: The number of items to skip before starting to collect the result set.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 2147483647
+            default: 0
+      responses:
+        "200":
+          description: A list of products.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [total, products]
+                properties:
+                  total:
+                    type: integer
+                    format: int32
+                    minimum: 0
+                    description: Number of products matching the query, across all pages.
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+              examples:
+                firstPage:
+                  summary: First page (truncated).
+                  value:
+                    total: 35
+                    products:
+                      - id: 5
+                        slug: "granola-noisettes-sirop-erable-1kg"
+                        label: "Granola aux noisettes & sirop d'érable - 1kg"
+                        description: "Granola aux noisettes, avoine, sirop d'érable et beurre de coco."
+                        priceCents: 2400
+                        inStock: true
+                      - id: 3
+                        slug: "granola-amandes-noix-de-pecan-1kg"
+                        label: "Granola aux amandes & aux noix de pécan - 1kg"
+                        description: "Granola aux amandes, aux noix de pécan, avec de l'avoine, du sirop d'érable et du beurre de coco."
+                        priceCents: 2600
+                        inStock: false
+        "400":
+          description: A query parameter is invalid.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+              examples:
+                invalidLimit:
+                  summary: Limit out of range
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: The limit must be an integer between 1 and 20.
+                invalidOffset:
+                  summary: Offset out of range
+                  value:
+                    type: about:blank
+                    title: Bad Request
+                    status: 400
+                    detail: The offset must be an integer between 0 and 2147483647.
+        "500":
+          $ref: "#/components/responses/InternalError"
 
 components:
   schemas:
