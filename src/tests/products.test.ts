@@ -3,8 +3,6 @@ import request from "supertest";
 import { app } from "../app.js";
 import { db } from "../prisma/db.js";
 import type { Varchar } from "@prisma/orm-postgres/target/codec-types";
-import { NotFoundError } from "../lib/errors.js";
-import { now } from "@prisma/orm-postgres/contract-builder";
 
 beforeEach(async () => {
     const plan = db.raw.sql`TRUNCATE TABLE products RESTART IDENTITY CASCADE`.affectedCount().build();
@@ -114,7 +112,7 @@ describe("GET /products/{id}", () => {
     });
 
     it.each(["abc", "0", "-1", "2147483648", "1.5", "1e3", "12abc"])(
-        "returns a 400 problem when the id is %s",
+        "returns a 400 problem when the id is %j",
         async (id) => {
             // Arrange: none, an invalid id must be rejected whatever the database contains
 
