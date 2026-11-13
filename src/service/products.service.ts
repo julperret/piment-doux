@@ -11,4 +11,17 @@ async function getProductById(id: number) {
     return product;
 }
 
-export { getProductById };
+async function getListOfProducts(limit: number, offset: number) {
+    const products = db.orm.public.Product.where({ deletedAt: null });
+
+    const total = await products.aggregate((a) => ({ total: a.count() }));
+    const productsRange = await products
+        .orderBy((p) => p.id.desc())
+        .limit(limit)
+        .offset(offset)
+        .all();
+
+    return { total: total.total, productsRange };
+}
+
+export { getProductById, getListOfProducts };
