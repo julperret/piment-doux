@@ -4,8 +4,8 @@ Backend for Piment Doux, an online shop and catering business: product catalogue
 customer accounts, orders and invoices, catering inquiries, and a blog.
 
 > **Status: early development.** The data model and the API contract are designed
-> first. The HTTP endpoints are not implemented yet. This README lists what is done,
-> what is in progress and what comes next.
+> first. The public product read endpoints are implemented; the other endpoints are
+> not yet. This README lists what is done, what is in progress and what comes next.
 
 ## Stack
 
@@ -51,7 +51,11 @@ customer accounts, orders and invoices, catering inquiries, and a blog.
   admins. Restoring a product whose slug was reused returns 409.
 - Prices exposed as integer cents (`priceCents`, EUR).
 - Stock: `inStock` boolean publicly, exact quantity for admins.
-- Lists: `page`, `limit`, `sort`, `order`, `search`.
+- Lists are paginated with `limit` (1 to 20, default 12) and `offset` (default 0),
+  newest first. The response carries the requested page and the `total` across all
+  pages. An `offset` past the end returns an empty page.
+- No API versioning: the only client is the first-party frontend, deployed with
+  the API. A version prefix will be introduced if a third-party client appears.
 - Errors follow RFC 9457 (`application/problem+json`). Unexpected errors are
   logged server-side and answered with a generic 500, so their message never
   reaches the client.
@@ -77,14 +81,16 @@ customer accounts, orders and invoices, catering inquiries, and a blog.
 - Integration test setup: Supertest and a dedicated test database, with a guard
   that refuses to run against a database whose name does not end with `_test`
 - Code formatting with Prettier, checked with `npm run format:check`
+- Public product read endpoints, with their OpenAPI paths and integration tests:
+  `GET /products/{id}` and the paginated `GET /products`
 
 ### In progress
 
-- Products API contract: public and admin schemas, paths, pagination
+- Products write API contract, starting with `POST /products`
 
 ### Next
 
-- Products endpoints: public read, admin write, soft delete and restore
+- Products endpoints: admin write, soft delete and restore
 - Request validation
 - Authentication and roles (user, guest, admin)
 - Orders, order status history and invoices
@@ -171,9 +177,9 @@ Run both again after pulling new migrations.
 npm run dev
 ```
 
-The server starts on http://localhost:3000 (override with `PORT`). Only a
-placeholder route exists for now; unknown routes return a `404` problem+json
-response.
+The server starts on http://localhost:3000 (override with `PORT`). The product
+read endpoints are available under `/products`; unknown routes return a `404`
+problem+json response.
 
 ### Tests
 
@@ -214,5 +220,7 @@ src/
   lib/             Shared code (error classes)
   middlewares/     Express middlewares (error handler)
   prisma/          Prisma contract and database client
+  route/           Express routers (HTTP validation and response shape)
+  service/         Domain logic and database queries
   tests/           Unit and integration tests (Vitest, Supertest)
 ```
